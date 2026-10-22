@@ -1,0 +1,1797 @@
+package com.example.actesimple.data.repository
+
+import com.example.actesimple.data.model.*
+
+object SeedData {
+
+    val CATEGORIES = listOf(
+        CategoryMeta("toate", "Toate procedurile", "All procedures", "Toate ghidurile administrative oficiale", "All official administrative guides"),
+        CategoryMeta("identitate", "Identitate & Pașapoarte", "Identity & Passports", "Buletin, pașaport biometric, reședință", "ID cards, passports, residence"),
+        CategoryMeta("auto", "Auto & Permise", "Vehicles & Driving", "Permise de conducere, înmatriculări, radieri", "Driving licenses, vehicle registrations"),
+        CategoryMeta("juridic", "Cazier & Justiție", "Judicial & Records", "Cazier judiciar, apostilă, legalizări", "Criminal record, apostille, legalizations"),
+        CategoryMeta("afaceri", "Afaceri & Muncă", "Business & Work", "Înființare SRL, PFA, Registrul Comerțului", "Company formation, freelancers, trade registry"),
+        CategoryMeta("locuinta", "Locuință & Flotant", "Housing & Residency", "Viza de flotant, rol fiscal, cadastru", "Temporary residence, tax roll, land registry"),
+        CategoryMeta("familie", "Familie & Copii", "Family & Children", "Alocații, stare civilă, naștere, căsătorie", "State allowances, civil status, birth, marriage"),
+        CategoryMeta("international", "Cetățeni Internaționali & IGI", "International & Visas", "Permise ședere IGI, înregistrare UE, NIF, vize", "Residence permits, EU registration, NIF, visas")
+    )
+
+    val OFFICIAL_PORTALS = listOf(
+        OfficialPortal(
+            id = "hub-mai",
+            name = "HUB MAI",
+            institution = "Ministerul Afacerilor Interne",
+            descriptionRo = "Portalul unificat pentru cazier judiciar online, programări buletine, pașapoarte și permise de conducere.",
+            descriptionEn = "Unified portal for online criminal record certificates, passport, ID and driving license bookings.",
+            url = "https://hub.mai.gov.ro",
+            category = "identitate",
+            badgeRo = "Cazier Online & Programări",
+            badgeEn = "Online Records & Booking"
+        ),
+        OfficialPortal(
+            id = "ghiseul-ro",
+            name = "Ghișeul.ro",
+            institution = "ADR (Autoritatea pentru Digitalizarea României)",
+            descriptionRo = "Sistemul național electronic de plată online a taxelor de buletin, pașaport, permise, taxe locale și amenzi fără comision.",
+            descriptionEn = "National electronic system for paying ID, passport, driving fees, local taxes and fines with zero commission.",
+            url = "https://www.ghiseul.ro",
+            category = "taxe",
+            badgeRo = "Plată Taxe Fără Comision",
+            badgeEn = "Zero Commission Payments"
+        ),
+        OfficialPortal(
+            id = "dgpci",
+            name = "DGPCI (Direcția Permise și Înmatriculări)",
+            institution = "Direcția Generală Permise de Conducere și Înmatriculări",
+            descriptionRo = "Verificare disponibilitate număr preferențial, programări preschimbare permis și dosare înmatriculare.",
+            descriptionEn = "Check plate number availability, appointments for driving licenses and vehicle registrations.",
+            url = "https://dgpci.mai.gov.ro",
+            category = "auto",
+            badgeRo = "Permise & Înmatriculări",
+            badgeEn = "Driving & Plates"
+        ),
+        OfficialPortal(
+            id = "portal-igi",
+            name = "Portal IGI",
+            institution = "Inspectoratul General pentru Imigrări",
+            descriptionRo = "Depunere online cereri pentru certificate de înregistrare UE, permise de ședere temporară și permanentă, avize de muncă.",
+            descriptionEn = "Online applications for EU registration certificates, temporary/permanent residence permits and work authorizations.",
+            url = "https://portaligi.mai.gov.ro",
+            category = "international",
+            badgeRo = "Imigrări & Rezidență",
+            badgeEn = "Immigration & Residence"
+        ),
+        OfficialPortal(
+            id = "eviza",
+            name = "E-Viza MAE",
+            institution = "Ministerul Afacerilor Externe",
+            descriptionRo = "Portalul oficial al României pentru solicitarea vizelor de scurtă și lungă ședere (tip C și D).",
+            descriptionEn = "Official Romanian portal for applying for short-stay and long-stay visas (types C and D).",
+            url = "https://eviza.mae.ro",
+            category = "international",
+            badgeRo = "Vize România MAE",
+            badgeEn = "MAE Visa Portal"
+        ),
+        OfficialPortal(
+            id = "onrc",
+            name = "Portal ONRC 2.0",
+            institution = "Oficiul Național al Registrului Comerțului",
+            descriptionRo = "Înregistrare 100% online a firmelor SRL și PFA, verificarea denumirilor și obținerea certificatelor constatatoare.",
+            descriptionEn = "100% online registration for LLCs and sole traders, company name verification and official certificates.",
+            url = "https://myportal.onrc.ro",
+            category = "afaceri",
+            badgeRo = "Înființare Firmă Online",
+            badgeEn = "Online Company Setup"
+        ),
+        OfficialPortal(
+            id = "anaf-spv",
+            name = "ANAF Spaiul Privat Virtual (SPV)",
+            institution = "Agenția Națională de Administrare Fiscală",
+            descriptionRo = "Declarații fiscale, obținere certificat de atestare fiscală, cazier fiscal și alocare NIF.",
+            descriptionEn = "Tax returns, tax compliance certificates, tax records, and non-resident tax ID (NIF) requests.",
+            url = "https://www.anaf.ro",
+            category = "taxe",
+            badgeRo = "Fisc & Declarații",
+            badgeEn = "Taxes & Filings"
+        ),
+        OfficialPortal(
+            id = "epasapoarte",
+            name = "e-Pașapoarte",
+            institution = "Direcția Generală de Pașapoarte",
+            descriptionRo = "Programare online pentru depunerea cererii de pașaport simplu electronic la orice ghișeu din țară.",
+            descriptionEn = "Online appointment scheduling for biometric passport applications at any office in Romania.",
+            url = "https://epasapoarte.ro",
+            category = "identitate",
+            badgeRo = "Programări Pașapoarte",
+            badgeEn = "Passport Bookings"
+        )
+    )
+
+    val PROCEDURES: List<Procedure> = listOf(
+        // 1. Buletin
+        Procedure(
+            id = "proc-buletin-expirare",
+            slug = "carte-identitate-expirare-schimbare-domiciliu",
+            title = "Eliberare Carte de Identitate (la expirare, furt sau schimbare domiciliu)",
+            titleEn = "Issuance of Romanian ID Card (expiration, theft or change of residence)",
+            shortDescription = "Ghid pas cu pas pentru obținerea noului buletin la expirare, deteriorare sau schimbarea adresei de domiciliu.",
+            shortDescriptionEn = "Step-by-step guide to renewing your Romanian national ID card upon expiration or change of residence address.",
+            fullDescription = "Cartea de identitate se eliberează de către Serviciul Public Comunitar Local de Evidență a Persoanelor (SPCLEP) pe raza căruia ai domiciliul. Procedura este necesară cu cel mult 180 de zile înainte de expirare sau în termen de 15 zile de la schimbarea domiciliului/pierdere.",
+            fullDescriptionEn = "The national ID card is issued by the Local Public Community Service for People's Records (SPCLEP) where you reside. Application must be made within 180 days before expiration or 15 days following address change.",
+            category = "identitate",
+            estimatedTime = "3 - 10 zile lucrătoare",
+            estimatedTimeEn = "3 - 10 business days",
+            difficulty = ProcedureDifficulty.USOR,
+            totalFee = "7 Lei",
+            totalFeeEn = "7 RON (~1.4 EUR)",
+            competentAuthority = "Direcția Generală pentru Evidența Persoanelor (SPCLEP local)",
+            competentAuthorityEn = "General Directorate for People's Records (Local SPCLEP)",
+            authorityCityNote = "Ghișeul arondat adresei de domiciliu",
+            authorityCityNoteEn = "Office assigned to your home address",
+            isOnlineAvailable = false,
+            lastVerifiedAt = "2026-10-15",
+            verificationStatus = "verified",
+            verifiedBy = "Specialist Proceduri Civice ActeSimple",
+            verificationNotes = "Verificat conform OUG 97/2005. Taxa este de 7 Lei achitabilă pe Ghișeul.ro.",
+            isPopular = true,
+            targetProfiles = listOf(ApplicantProfile.ALL, ApplicantProfile.ROMANIAN),
+            keywords = listOf("buletin", "carte de identitate", "buletin expirat", "schimbare domiciliu", "spclep", "taxa buletin", "evidenta populatiei"),
+            synonyms = listOf("buletin", "carte identitate", "buletin nou", "ci", "schimbare buletin"),
+            proTips = listOf(
+                "Dacă nu ești proprietarul locuinței, proprietarul (sau toți coproprietarii) TREBUIE să fie prezent fizic la ghișeu cu actul de identitate!",
+                "Taxa de 7 lei se poate plăti online pe Ghișeul.ro fără comision, iar dovada de plată salvată pe telefon este acceptată.",
+                "Documentul de proprietate nu trebuie să fie mai vechi de 30 de zile dacă este extras de carte funciară pentru informare."
+            ),
+            proTipsEn = listOf(
+                "If you are not the property owner, the landlord/owner MUST accompany you in person to the counter with their ID!",
+                "The 7 RON fee can be paid online at Ghiseul.ro without commission; showing digital receipt on phone is accepted.",
+                "Land registry excerpts must be less than 30 days old."
+            ),
+            documents = listOf(
+                DocumentItem(
+                    id = "doc-ci-1",
+                    procedureId = "proc-buletin-expirare",
+                    name = "Cererea pentru eliberarea actului de identitate",
+                    nameEn = "Application form for ID card issuance",
+                    type = "formular",
+                    isMandatory = true,
+                    description = "Se completează cu majuscule. Se semnează în fața funcționarului de la ghișeu.",
+                    descriptionEn = "Completed in capital letters, signed before the desk officer.",
+                    whereToGet = "Disponibilă gratuit la ghișeu sau pe hub.mai.gov.ro",
+                    whereToGetEn = "Available free at counter or downloaded on hub.mai.gov.ro",
+                    downloadUrl = "https://hub.mai.gov.ro",
+                    downloadLabel = "Descarcă formular cerere (PDF)",
+                    orderIndex = 1
+                ),
+                DocumentItem(
+                    id = "doc-ci-2",
+                    procedureId = "proc-buletin-expirare",
+                    name = "Cartea de identitate veche (sau dovada de declarare pierdere/furt)",
+                    nameEn = "Old ID card (or declaration of loss/theft)",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Se predă la ghișeu la eliberarea noii cărți.",
+                    descriptionEn = "Handed in at the counter when picking up the new ID card.",
+                    whereToGet = "Documentul aflat în posesia ta",
+                    whereToGetEn = "Document in your possession",
+                    orderIndex = 2
+                ),
+                DocumentItem(
+                    id = "doc-ci-3",
+                    procedureId = "proc-buletin-expirare",
+                    name = "Certificatul de naștere",
+                    nameEn = "Birth certificate",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Original + copie simplă xerox (originalul se restituie pe loc).",
+                    descriptionEn = "Original + photocopied page (original returned immediately).",
+                    whereToGet = "Starea civilă a localității de naștere",
+                    whereToGetEn = "Civil registry of place of birth",
+                    orderIndex = 3
+                ),
+                DocumentItem(
+                    id = "doc-ci-4",
+                    procedureId = "proc-buletin-expirare",
+                    name = "Documentul doveditor al adresei de domiciliu",
+                    nameEn = "Proof of residence address document",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Contract de vânzare-cumpărare, donație, moștenire sau extras de carte funciară recent. Original + copie.",
+                    descriptionEn = "Purchase contract, donation, inheritance, or recent land registry excerpt. Original + copy.",
+                    whereToGet = "Arhiva proprie / Notar / extras online ANCPI",
+                    whereToGetEn = "Personal archive / Notary / ANCPI online excerpt",
+                    orderIndex = 4
+                ),
+                DocumentItem(
+                    id = "doc-ci-5",
+                    procedureId = "proc-buletin-expirare",
+                    name = "Chitanța plății taxei de 7 Lei",
+                    nameEn = "Receipt of the 7 RON ID card fee",
+                    type = "dovada_plata",
+                    isMandatory = true,
+                    description = "Achitabilă pe Ghișeul.ro, automate SelfPay sau casieria locală de taxe.",
+                    descriptionEn = "Payable on Ghiseul.ro, SelfPay terminals or municipal tax desks.",
+                    whereToGet = "Ghișeul.ro secțiunea plăți fără autentificare",
+                    whereToGetEn = "Ghiseul.ro payment portal",
+                    orderIndex = 5
+                )
+            ),
+            steps = listOf(
+                StepItem(
+                    id = "step-ci-1",
+                    procedureId = "proc-buletin-expirare",
+                    stepNumber = 1,
+                    title = "Programare online la evidența persoanelor",
+                    titleEn = "Online appointment for population records",
+                    description = "Majoritatea serviciilor de evidență a populației funcționează cu programare prealabilă pe portalul primăriei sau HUB MAI.",
+                    descriptionEn = "Book an appointment slot on your municipality portal or HUB MAI.",
+                    locationOrTool = "hub.mai.gov.ro sau site-ul primăriei de domiciliu",
+                    tip = "Programează-te cu 2-3 săptămâni înainte de data expirării.",
+                    tipEn = "Book 2-3 weeks before expiration date to secure your desired time."
+                ),
+                StepItem(
+                    id = "step-ci-2",
+                    procedureId = "proc-buletin-expirare",
+                    stepNumber = 2,
+                    title = "Plata taxei de 7 Lei pe Ghișeul.ro",
+                    titleEn = "Pay the 7 RON fee on Ghiseul.ro",
+                    description = "Plătește online cu cardul fără comision. Descarcă chitanța pe telefon.",
+                    descriptionEn = "Pay online with credit/debit card. Keep digital receipt on smartphone.",
+                    locationOrTool = "ghiseul.ro",
+                    externalUrl = "https://www.ghiseul.ro",
+                    externalLabel = "Plătește pe Ghișeul.ro"
+                ),
+                StepItem(
+                    id = "step-ci-3",
+                    procedureId = "proc-buletin-expirare",
+                    stepNumber = 3,
+                    title = "Depunerea dosarului și fotografierea la ghișeu",
+                    titleEn = "Filing dossier and capturing photo at counter",
+                    description = "Prezintă-te la data și ora programată. Semnează cererea, funcționarul preia poza digitală pe loc.",
+                    descriptionEn = "Attend the scheduled appointment. Sign application and photo is taken right on spot."
+                ),
+                StepItem(
+                    id = "step-ci-4",
+                    procedureId = "proc-buletin-expirare",
+                    stepNumber = 4,
+                    title = "Ridicarea noului buletin",
+                    titleEn = "Picking up your new ID card",
+                    description = "Mergi la ghișeul de eliberări cu buletinul vechi și tichetul primit la depunere.",
+                    descriptionEn = "Collect new ID with your old card and the claim ticket received."
+                )
+            ),
+            sources = listOf(
+                SourceItem("src-ci-1", "proc-buletin-expirare", "DGEP - Evidența Persoanelor", "https://hub.mai.gov.ro", "2026-10-15", "Informații oficiale privind actele necesare")
+            ),
+            officialUrl = "https://hub.mai.gov.ro",
+            expiryDate = java.time.LocalDate.now().plusDays(15).toString()
+        ),
+
+        // 2. Pașaport simplu electronic
+        Procedure(
+            id = "proc-pasaport-electronic",
+            slug = "pasaport-simplu-electronic-adulti",
+            title = "Pașaport Simplu Electronic (pentru adulți)",
+            titleEn = "Biometric Electronic Passport (for Adults)",
+            shortDescription = "Obținerea pașaportului biometric valabil 10 ani pentru călătorii internaționale în orice țară a lumii.",
+            shortDescriptionEn = "Acquiring a 10-year biometric passport for international travel at any passport office across Romania.",
+            fullDescription = "Pașaportul simplu electronic se eliberează cetățenilor români cu vârsta de peste 18 ani, având o valabilitate de 10 ani. Cererile se pot depune la orice serviciu public comunitar de pașapoarte din România, indiferent de județul de domiciliu.",
+            fullDescriptionEn = "The biometric passport is issued to Romanian citizens over 18 years, valid for 10 years. Applications can be submitted at any county passport office regardless of domicile.",
+            category = "identitate",
+            estimatedTime = "3 - 5 zile lucrătoare",
+            estimatedTimeEn = "3 - 5 business days",
+            difficulty = ProcedureDifficulty.USOR,
+            totalFee = "258 Lei",
+            totalFeeEn = "258 RON (~52 EUR)",
+            competentAuthority = "Direcția Generală de Pașapoarte (DGP)",
+            competentAuthorityEn = "General Directorate for Passports (DGP)",
+            authorityCityNote = "Orice serviciu județean de pașapoarte din România",
+            authorityCityNoteEn = "Any county passport office in Romania",
+            isOnlineAvailable = true,
+            lastVerifiedAt = "2026-10-18",
+            verificationStatus = "verified",
+            verifiedBy = "Specialist Proceduri ActeSimple",
+            isPopular = true,
+            targetProfiles = listOf(ApplicantProfile.ALL, ApplicantProfile.ROMANIAN),
+            keywords = listOf("pasaport", "pasaport biometric", "epasapoarte", "taxa pasaport", "dgp", "calatorii"),
+            synonyms = listOf("pasaport", "pasaport nou", "pasaport electronic", "reinnoire pasaport"),
+            proTips = listOf(
+                "Nu ai nevoie de fotografii de acasă: poza biometrică și amprentele digitale se realizează gratuit la ghișeu!",
+                "Poți solicita livrarea pașaportului la domiciliu prin curier rapid pentru 15 lei suplimentar.",
+                "Programarea online pe epasapoarte.ro este obligatorie în majoritatea marilor orașe."
+            ),
+            proTipsEn = listOf(
+                "No need to bring printed photos: the biometric picture and fingerprints are taken on-site at the counter for free!",
+                "Home courier delivery is available for an extra 15 RON.",
+                "Online scheduling at epasapoarte.ro is mandatory in major cities."
+            ),
+            documents = listOf(
+                DocumentItem(
+                    id = "doc-pas-1",
+                    procedureId = "proc-pasaport-electronic",
+                    name = "Cartea de identitate valabilă în original",
+                    nameEn = "Valid national ID card in original",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Trebuie să fie în termen de valabilitate la momentul depunerii cererii.",
+                    descriptionEn = "Must be valid on the date of application submission.",
+                    orderIndex = 1
+                ),
+                DocumentItem(
+                    id = "doc-pas-2",
+                    procedureId = "proc-pasaport-electronic",
+                    name = "Chitanța doveditoare a plății taxei de 258 Lei",
+                    nameEn = "Receipt of the 258 RON passport fee",
+                    type = "dovada_plata",
+                    isMandatory = true,
+                    description = "Plătită online pe Ghișeul.ro sau prin internet banking în contul DGP.",
+                    descriptionEn = "Paid online via Ghiseul.ro or bank transfer to DGP treasury account.",
+                    whereToGet = "Ghișeul.ro",
+                    orderIndex = 2
+                ),
+                DocumentItem(
+                    id = "doc-pas-3",
+                    procedureId = "proc-pasaport-electronic",
+                    name = "Pașaportul anterior (dacă deții unul)",
+                    nameEn = "Previous passport (if held)",
+                    type = "original",
+                    isMandatory = false,
+                    description = "Se anulează și se restituie solicitantului dacă conține vize valabile.",
+                    descriptionEn = "Cancelled and returned if it contains active visas.",
+                    orderIndex = 3
+                )
+            ),
+            steps = listOf(
+                StepItem(
+                    id = "step-pas-1",
+                    procedureId = "proc-pasaport-electronic",
+                    stepNumber = 1,
+                    title = "Programare pe epasapoarte.ro",
+                    titleEn = "Online reservation on epasapoarte.ro",
+                    description = "Alege județul, sediul și intervalul orar dorit pe platforma națională oficială.",
+                    descriptionEn = "Select county, location and preferred time slot on official national platform.",
+                    externalUrl = "https://epasapoarte.ro",
+                    externalLabel = "Accesează epasapoarte.ro"
+                ),
+                StepItem(
+                    id = "step-pas-2",
+                    procedureId = "proc-pasaport-electronic",
+                    stepNumber = 2,
+                    title = "Plata taxei de 258 Lei pe Ghișeul.ro",
+                    titleEn = "Pay 258 RON fee on Ghiseul.ro",
+                    description = "Selectează 'Taxă pașaport simplu electronic adulți (258 lei)' și achită cu cardul.",
+                    descriptionEn = "Select adult biometric passport fee on Ghiseul.ro and pay with card.",
+                    externalUrl = "https://www.ghiseul.ro",
+                    externalLabel = "Plătește pe Ghișeul.ro"
+                ),
+                StepItem(
+                    id = "step-pas-3",
+                    procedureId = "proc-pasaport-electronic",
+                    stepNumber = 3,
+                    title = "Prezentarea la ghișeu și preluarea datelor biometrice",
+                    titleEn = "Counter attendance and biometric enrollment",
+                    description = "Prezintă buletinul și dovada plății. Ți se fac fotografia și amprentele în 5 minute.",
+                    descriptionEn = "Present ID and payment receipt. Photo and fingerprints recorded in 5 minutes."
+                )
+            ),
+            sources = listOf(
+                SourceItem("src-pas-1", "proc-pasaport-electronic", "Direcția Generală de Pașapoarte", "https://epasapoarte.ro", "2026-10-18")
+            ),
+            officialUrl = "https://epasapoarte.ro"
+        ),
+
+        // 3. Cazier Judiciar Online
+        Procedure(
+            id = "proc-cazier-judiciar",
+            slug = "certificat-cazier-judiciar-online",
+            title = "Certificat de Cazier Judiciar (Eliberare 100% Online)",
+            titleEn = "Criminal Record Certificate (100% Online Issuance)",
+            shortDescription = "Obține cazierul judiciar gratuit, descărcabil în câteva minute prin platforma HUB MAI.",
+            shortDescriptionEn = "Obtain your official Romanian criminal record certificate free of charge online via HUB MAI within minutes.",
+            fullDescription = "Certificatul de cazier judiciar se eliberează gratuit pentru persoanele fizice fără antecedente penale direct în format electronic PDF semnat digital calificat prin platforma oficială HUB MAI (autentificare prin Ghișeul.ro sau ROeID).",
+            fullDescriptionEn = "The certificate is issued free of charge to individuals without criminal records directly as a cryptographically signed PDF via the official HUB MAI portal.",
+            category = "juridic",
+            estimatedTime = "Instant (5 - 15 minute online)",
+            estimatedTimeEn = "Instant (5 - 15 minutes online)",
+            difficulty = ProcedureDifficulty.USOR,
+            totalFee = "0 Lei (Gratuit)",
+            totalFeeEn = "Free (0 RON)",
+            competentAuthority = "Ministerul Afacerilor Interne (Poliția Română - HUB MAI)",
+            competentAuthorityEn = "Ministry of Internal Affairs (Romanian Police - HUB MAI)",
+            isOnlineAvailable = true,
+            lastVerifiedAt = "2026-10-20",
+            verificationStatus = "verified",
+            verifiedBy = "Specialist Digitalizare ActeSimple",
+            isPopular = true,
+            targetProfiles = listOf(ApplicantProfile.ALL, ApplicantProfile.ROMANIAN, ApplicantProfile.EU_EEA_CH),
+            keywords = listOf("cazier", "cazier judiciar", "cazier online", "hub mai", "cazier gratuit", "politie"),
+            synonyms = listOf("cazier", "cazier judiciar online", "cazier politie", "certificat cazier"),
+            proTips = listOf(
+                "Cazierul descărcat de pe HUB MAI este semnat electronic calificat și este 100% legal valabil 6 luni în România!",
+                "Dacă ai deja cont validat pe Ghișeul.ro, te poți conecta pe HUB MAI cu un singur clic fără drumuri fizice.",
+                "Dacă ai antecedente penale sau ești cetățean străin fără CNP, eliberarea se face doar la ghișeul fizic de poliție."
+            ),
+            proTipsEn = listOf(
+                "The PDF certificate from HUB MAI has a qualified digital signature and is legally valid for 6 months!",
+                "If you have a verified Ghiseul.ro account, you can log in to HUB MAI instantly with one click.",
+                "Foreign citizens without a Romanian CNP must still visit the police counter in person."
+            ),
+            documents = listOf(
+                DocumentItem(
+                    id = "doc-caz-1",
+                    procedureId = "proc-cazier-judiciar",
+                    name = "Cont validat pe Ghișeul.ro sau cont HUB MAI",
+                    nameEn = "Verified Ghiseul.ro account or HUB MAI account",
+                    type = "formular",
+                    isMandatory = true,
+                    description = "Folosit pentru autentificarea securizată și confirmarea identității electronice.",
+                    descriptionEn = "Used for secure login and identity verification.",
+                    whereToGet = "ghiseul.ro / hub.mai.gov.ro",
+                    orderIndex = 1
+                ),
+                DocumentItem(
+                    id = "doc-caz-2",
+                    procedureId = "proc-cazier-judiciar",
+                    name = "Carte de identitate valabilă",
+                    nameEn = "Valid national ID card",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Datele din cartea de identitate (CNP, serie, număr) necesare la completarea cererii.",
+                    descriptionEn = "ID information (CNP, series, number) needed for form completion.",
+                    orderIndex = 2
+                )
+            ),
+            steps = listOf(
+                StepItem(
+                    id = "step-caz-1",
+                    procedureId = "proc-cazier-judiciar",
+                    stepNumber = 1,
+                    title = "Autentificare pe hub.mai.gov.ro",
+                    titleEn = "Log in to hub.mai.gov.ro",
+                    description = "Alege opțiunea 'Autentificare cu Ghișeul.ro' pentru validare instantanee.",
+                    descriptionEn = "Select 'Log in with Ghiseul.ro' for instant digital authentication.",
+                    externalUrl = "https://hub.mai.gov.ro",
+                    externalLabel = "Deschide HUB MAI"
+                ),
+                StepItem(
+                    id = "step-caz-2",
+                    procedureId = "proc-cazier-judiciar",
+                    stepNumber = 2,
+                    title = "Completarea motivului solicitării",
+                    titleEn = "Fill in request motivation",
+                    description = "Alege serviciul 'Cazier Judiciar' și selectează motivul (angajare, permis, dosar voluntar etc.).",
+                    descriptionEn = "Select 'Criminal Record' service and choose purpose (employment, exams, etc.)."
+                ),
+                StepItem(
+                    id = "step-caz-3",
+                    procedureId = "proc-cazier-judiciar",
+                    stepNumber = 3,
+                    title = "Descărcarea documentului PDF securizat",
+                    titleEn = "Download secured PDF certificate",
+                    description = "Certificatul se generează automat în câteva secunde. Descarcă-l și trimite-l angajatorului.",
+                    descriptionEn = "Certificate generated in seconds. Download and share PDF directly."
+                )
+            ),
+            sources = listOf(
+                SourceItem("src-caz-1", "proc-cazier-judiciar", "Poliția Română - HUB MAI", "https://hub.mai.gov.ro", "2026-10-20")
+            ),
+            officialUrl = "https://hub.mai.gov.ro"
+        ),
+
+        // 4. Permis de conducere preschimbare
+        Procedure(
+            id = "proc-permis-conducere",
+            slug = "preschimbare-permis-conducere-expirare",
+            title = "Preschimbare Permis de Conducere (la expirare sau schimbare nume)",
+            titleEn = "Driving License Renewal (expiration or name change)",
+            shortDescription = "Ghid complet pentru înnoirea permisului auto la expirarea valabilității de 10 ani cu fișa medicală.",
+            shortDescriptionEn = "Complete guide to renewing your Romanian driving license upon 10-year expiration with medical exam certificate.",
+            fullDescription = "Preschimbarea permisului de conducere se realizează la serviciul public comunitar permise de conducere și înmatriculări (DGPCI). În caz de expirare este obligatorie fișa medicală auto eliberată de o clinică autorizată.",
+            fullDescriptionEn = "Driver license renewal is handled by DGPCI county offices. A medical certificate from an authorized clinic is mandatory when renewing expired licenses.",
+            category = "auto",
+            estimatedTime = "5 - 7 zile lucrătoare (sau curier)",
+            estimatedTimeEn = "5 - 7 business days (or courier)",
+            difficulty = ProcedureDifficulty.MEDIU,
+            totalFee = "89 Lei (+ ~150-200 Lei fișa medicală)",
+            totalFeeEn = "89 RON (+ ~150-200 RON medical exam)",
+            competentAuthority = "DGPCI (Direcția Permise de Conducere și Înmatriculări)",
+            competentAuthorityEn = "DGPCI (Driving Licenses Directorate)",
+            isOnlineAvailable = true,
+            lastVerifiedAt = "2026-10-16",
+            verificationStatus = "verified",
+            verifiedBy = "Specialist Proceduri Auto ActeSimple",
+            isPopular = true,
+            targetProfiles = listOf(ApplicantProfile.ALL, ApplicantProfile.ROMANIAN),
+            keywords = listOf("permis", "permis de conducere", "fisa medicala auto", "dgpci", "taxa permis", "carnet auto"),
+            synonyms = listOf("permis", "permis auto", "carnet conducere", "reinnoire permis"),
+            proTips = listOf(
+                "Fisa medicală auto este valabilă 1 an de la data eliberării: asigură-te că include viza de la toate cele 6 specialități medicale!",
+                "Taxa de 89 lei se achită cel mai simplu pe Ghișeul.ro sau pe dgpci.mai.gov.ro fără comision.",
+                "La depunere primești o dovadă înlocuitoare cu drept de circulație valabilă 15 zile, iar permisul nou vine prin Poșta Română direct acasă."
+            ),
+            proTipsEn = listOf(
+                "Medical check certificate is valid for 1 year from issuance; make sure all 6 specialties are stamped!",
+                "The 89 RON fee is easily paid on Ghiseul.ro without extra cost.",
+                "You receive a 15-day temporary driving permit while the new card is shipped directly to your mailbox."
+            ),
+            documents = listOf(
+                DocumentItem(
+                    id = "doc-per-1",
+                    procedureId = "proc-permis-conducere",
+                    name = "Cererea de preschimbare permis",
+                    nameEn = "Application form",
+                    type = "formular",
+                    isMandatory = true,
+                    description = "Se generează automat și se semnează la ghișeu în fața funcționarului.",
+                    descriptionEn = "Generated electronically and signed at the counter.",
+                    orderIndex = 1
+                ),
+                DocumentItem(
+                    id = "doc-per-2",
+                    procedureId = "proc-permis-conducere",
+                    name = "Fișa medicală auto (în original și copie)",
+                    nameEn = "Driver medical examination certificate (original and copy)",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Emisă de o unitate medicală autorizată din care rezultă că ești apt pentru conducerea autovehiculelor.",
+                    descriptionEn = "Issued by an authorized clinic certifying fitness to drive.",
+                    whereToGet = "Orice clinică medicală autorizată",
+                    orderIndex = 2
+                ),
+                DocumentItem(
+                    id = "doc-per-3",
+                    procedureId = "proc-permis-conducere",
+                    name = "Permisul de conducere vechi",
+                    nameEn = "Old driving license",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Se predă la ghișeu în momentul depunerii dosarului.",
+                    descriptionEn = "Handed in at the counter when applying.",
+                    orderIndex = 3
+                ),
+                DocumentItem(
+                    id = "doc-per-4",
+                    procedureId = "proc-permis-conducere",
+                    name = "Actul de identitate valabil (original + copie)",
+                    nameEn = "Valid national ID card (original + copy)",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Dovedește domiciliul sau reședința pe teritoriul României.",
+                    descriptionEn = "Proves domicile or legal residence in Romania.",
+                    orderIndex = 4
+                ),
+                DocumentItem(
+                    id = "doc-per-5",
+                    procedureId = "proc-permis-conducere",
+                    name = "Dovada plății taxei de 89 Lei",
+                    nameEn = "Receipt of 89 RON fee payment",
+                    type = "dovada_plata",
+                    isMandatory = true,
+                    description = "Achitată pe Ghișeul.ro sau dgpci.mai.gov.ro.",
+                    descriptionEn = "Paid online via Ghiseul.ro.",
+                    whereToGet = "Ghișeul.ro",
+                    orderIndex = 5
+                )
+            ),
+            steps = listOf(
+                StepItem(
+                    id = "step-per-1",
+                    procedureId = "proc-permis-conducere",
+                    stepNumber = 1,
+                    title = "Efectuarea fișei medicale auto",
+                    titleEn = "Complete driver medical examination",
+                    description = "Programează-te la o clinică autorizată pentru controalele oftalmologic, ORL, psihologic etc.",
+                    descriptionEn = "Book appointment at an authorized clinic for medical checkup."
+                ),
+                StepItem(
+                    id = "step-per-2",
+                    procedureId = "proc-permis-conducere",
+                    stepNumber = 2,
+                    title = "Programare online la DGPCI și plata taxei",
+                    titleEn = "Online DGPCI appointment & fee payment",
+                    description = "Accesează dgpci.mai.gov.ro pentru programare și plătește taxa de 89 lei pe Ghișeul.ro.",
+                    descriptionEn = "Book slot on dgpci.mai.gov.ro and pay 89 RON fee on Ghiseul.ro.",
+                    externalUrl = "https://dgpci.mai.gov.ro",
+                    externalLabel = "Programare DGPCI"
+                ),
+                StepItem(
+                    id = "step-per-3",
+                    procedureId = "proc-permis-conducere",
+                    stepNumber = 3,
+                    title = "Depunerea actelor și primirea dovezii provizorii",
+                    titleEn = "Submit dossier & get temporary permit",
+                    description = "La ghișeu se preia fotografia, se depune fișa medicală și primești dovada provizorie valabilă 15 zile.",
+                    descriptionEn = "Photo is captured, medical certificate submitted, and 15-day temporary permit issued."
+                )
+            ),
+            sources = listOf(
+                SourceItem("src-per-1", "proc-permis-conducere", "DGPCI", "https://dgpci.mai.gov.ro", "2026-10-16")
+            ),
+            officialUrl = "https://dgpci.mai.gov.ro",
+            expiryDate = java.time.LocalDate.now().plusDays(25).toString()
+        ),
+
+        // 5. Inregistrare rezidenta UE / SEE (IGI)
+        Procedure(
+            id = "proc-ue-inregistrare-rezidenta",
+            slug = "inregistrare-rezidenta-cetateni-ue-see-elvetia",
+            title = "Înregistrarea Rezidenței pentru Cetățenii UE / SEE (Certificat de Înregistrare IGI)",
+            titleEn = "EU / EEA / Swiss Citizen Residence Registration (Registration Certificate)",
+            shortDescription = "Procedura legală obligatorie pentru cetățenii UE/SEE care locuiesc sau muncesc în România mai mult de 90 de zile.",
+            shortDescriptionEn = "Mandatory legal procedure for EU/EEA/Swiss citizens residing or working in Romania over 90 days to receive an official Certificate.",
+            fullDescription = "Cetățenii Uniunii Europene și ai Spațiului Economic European au drept de liberă circulație în România. Dacă șederea depășește 90 de zile, legislația română (OUG 102/2005) impune înregistrarea rezidenței la formațiunile teritoriale ale Inspectoratului General pentru Imigrări (IGI) și eliberarea Certificatului de Înregistrare cu CNP românesc.",
+            fullDescriptionEn = "EU/EEA/Swiss citizens staying in Romania over 90 days must register their residence with the General Inspectorate for Immigration (IGI) under OUG 102/2005 to receive a Romanian Registration Certificate with CNP.",
+            category = "international",
+            estimatedTime = "Eliberare în aceeași zi sau max. 24h",
+            estimatedTimeEn = "Issued on the same day or within 24h",
+            difficulty = ProcedureDifficulty.USOR,
+            totalFee = "Gratuit (0 Lei)",
+            totalFeeEn = "Free of charge (0 RON)",
+            competentAuthority = "Inspectoratul General pentru Imigrări (IGI)",
+            competentAuthorityEn = "General Inspectorate for Immigration (IGI)",
+            authorityCityNote = "Serviciul IGI teritorial din județul de reședință",
+            authorityCityNoteEn = "Territorial IGI service in your county of residence",
+            isOnlineAvailable = true,
+            lastVerifiedAt = "2026-10-18",
+            verificationStatus = "verified",
+            verifiedBy = "Specialist Relații Internaționale & IGI",
+            isPopular = true,
+            targetProfiles = listOf(ApplicantProfile.ALL, ApplicantProfile.EU_EEA_CH),
+            stayPurposes = listOf("work", "studies", "business", "other"),
+            keywords = listOf("ue", "see", "elvetia", "certificat de inregistrare", "igi", "rezidenta romania", "cnp straini", "residence certificate"),
+            synonyms = listOf("certificat inregistrare ue", "rezidenta ue", "drept sedere ue", "registration certificate"),
+            proTips = listOf(
+                "Programarea online pe portaligi.mai.gov.ro reduce timpul de așteptare la ghișeu la doar câteva minute.",
+                "Contractul de închiriere trebuie să fie înregistrat la ANAF sau încheiat în formă autentică notarială.",
+                "Certificatul include CNP-ul tău românesc oficial (care începe cu 7 sau 8), esențial pentru deschiderea de cont bancar și plata taxelor."
+            ),
+            proTipsEn = listOf(
+                "Scheduling via portaligi.mai.gov.ro cuts waiting time at the counter to just minutes.",
+                "Your apartment lease must be registered with ANAF or notarized.",
+                "The certificate includes your official Romanian CNP (starting with 7 or 8), vital for local banking and taxes."
+            ),
+            documents = listOf(
+                DocumentItem(
+                    id = "doc-ue-1",
+                    procedureId = "proc-ue-inregistrare-rezidenta",
+                    name = "Cerere-tip pentru înregistrarea rezidenței cetățenilor UE",
+                    nameEn = "Official application form for EU citizen registration",
+                    type = "formular",
+                    isMandatory = true,
+                    description = "Formular IGI în care se bifează scopul șederii (angajat, studii, activități independente sau mijloace proprii).",
+                    descriptionEn = "IGI form selecting purpose of stay (employment, studies, self-employment, self-sufficiency).",
+                    whereToGet = "portaligi.mai.gov.ro",
+                    orderIndex = 1
+                ),
+                DocumentItem(
+                    id = "doc-ue-2",
+                    procedureId = "proc-ue-inregistrare-rezidenta",
+                    name = "Pașaportul valabil sau actul național de identitate (original + copie)",
+                    nameEn = "Valid national ID card or passport (original + copy)",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Emis de statul membru UE de origine.",
+                    descriptionEn = "Issued by your EU country of origin.",
+                    orderIndex = 2
+                ),
+                DocumentItem(
+                    id = "doc-ue-3",
+                    procedureId = "proc-ue-inregistrare-rezidenta",
+                    name = "Dovada spațiului de locuit în România",
+                    nameEn = "Proof of legal accommodation in Romania",
+                    type = "copie",
+                    isMandatory = true,
+                    description = "Contract de închiriere înregistrat la ANAF, comodat notarial sau extras de carte funciară.",
+                    descriptionEn = "Lease agreement registered with ANAF or notarized bailment agreement.",
+                    orderIndex = 3
+                ),
+                DocumentItem(
+                    id = "doc-ue-4",
+                    procedureId = "proc-ue-inregistrare-rezidenta",
+                    name = "Dovada activității (Contract de muncă REVISAL / Adeverință studențească / Mijloace)",
+                    nameEn = "Proof of activity (Employment contract / Student status / Funds)",
+                    type = "copie",
+                    isMandatory = true,
+                    description = "Pentru salariați: adeverință de la angajator cu număr REVISAL. Pentru studenți: adeverință facultate + asigurare medicală.",
+                    descriptionEn = "For employees: REVISAL registered contract certificate. For students: University certificate + medical insurance.",
+                    orderIndex = 4
+                )
+            ),
+            steps = listOf(
+                StepItem(
+                    id = "step-ue-1",
+                    procedureId = "proc-ue-inregistrare-rezidenta",
+                    stepNumber = 1,
+                    title = "Depunerea cererii online pe portaligi.mai.gov.ro",
+                    titleEn = "Submit online application on portaligi.mai.gov.ro",
+                    description = "Creează cont pe portalul IGI, încarcă scanurile actelor și programează-te la biroul județean.",
+                    descriptionEn = "Create account on IGI portal, upload document scans and select appointment slot.",
+                    externalUrl = "https://portaligi.mai.gov.ro",
+                    externalLabel = "Deschide Portal IGI"
+                ),
+                StepItem(
+                    id = "step-ue-2",
+                    procedureId = "proc-ue-inregistrare-rezidenta",
+                    stepNumber = 2,
+                    title = "Prezentarea la ghișeul IGI teritorial",
+                    titleEn = "Visit county IGI office in person",
+                    description = "Prezintă actele originale funcționarului. Certificatul se tipărește de regulă pe loc.",
+                    descriptionEn = "Present original files to the immigration officer. Certificate is usually printed on the spot."
+                )
+            ),
+            sources = listOf(
+                SourceItem("src-ue-1", "proc-ue-inregistrare-rezidenta", "Inspectoratul General pentru Imigrări", "https://portaligi.mai.gov.ro", "2026-10-18")
+            ),
+            officialUrl = "https://portaligi.mai.gov.ro",
+            recommendationRationaleRo = "Se aplică cetățenilor UE/SEE care stau în România peste 90 de zile pentru muncă, studii sau afaceri.",
+            recommendationRationaleEn = "Applies to EU/EEA citizens staying in Romania over 90 days for work, study, or living."
+        ),
+
+        // 6. Permis de sedere temporara non-UE
+        Procedure(
+            id = "proc-non-ue-sedere-munca",
+            slug = "permis-sedere-temporara-munca-non-ue",
+            title = "Permis de Ședere Temporară în Scop de Muncă (Cetățeni Non-UE / IGI)",
+            titleEn = "Temporary Residence Permit for Employment (Non-EU Citizens / IGI)",
+            shortDescription = "Ghid complet pentru obținerea permisului de ședere (plastic cu cip) după intrarea în țară cu viza de lungă ședere tip D/AM.",
+            shortDescriptionEn = "Complete guide to obtaining a Romanian single residence and work permit after entering on a Type D/AM employment visa.",
+            fullDescription = "Cetățenii din state terțe (non-UE) care dețin un aviz de angajare și o viză de lungă ședere pentru angajare în muncă (D/AM) trebuie să solicite prelungirea dreptului de ședere și eliberarea permisului unic la IGI cu cel puțin 30 de zile înainte de expirarea vizei.",
+            fullDescriptionEn = "Third-country nationals holding a work authorization and Type D/AM employment visa must apply for residence extension and single permit at IGI at least 30 days before visa expires.",
+            category = "international",
+            estimatedTime = "30 - 45 zile",
+            estimatedTimeEn = "30 - 45 days",
+            difficulty = ProcedureDifficulty.COMPLEX,
+            totalFee = "120 Euro (echivalent în Lei) + 259 Lei taxa de permis",
+            totalFeeEn = "~120 EUR + 259 RON card fee",
+            competentAuthority = "Inspectoratul General pentru Imigrări (IGI)",
+            competentAuthorityEn = "General Inspectorate for Immigration (IGI)",
+            isOnlineAvailable = true,
+            lastVerifiedAt = "2026-10-18",
+            verificationStatus = "verified",
+            verifiedBy = "Specialist Imigrări ActeSimple",
+            isPopular = true,
+            targetProfiles = listOf(ApplicantProfile.ALL, ApplicantProfile.NON_EU),
+            stayPurposes = listOf("work"),
+            keywords = listOf("permis de sedere", "non-ue", "viza d", "aviz de munca", "igi", "angajare straini", "work permit"),
+            synonyms = listOf("permis sedere", "residence permit", "igi permis", "sedere munca"),
+            proTips = listOf(
+                "Depune cererea cu cel puțin 30 de zile înainte de expirarea vizei de lungă ședere pentru a evita amenzile și returnarea!",
+                "Fișa medicală trebuie eliberată de o clinică românească cu mențiunea 'apt de muncă și nu pune în pericol sănătatea publică'.",
+                "Taxele se pot achita prin Trezorerie sau CEC Bank cu codurile indicate pe portaligi.mai.gov.ro."
+            ),
+            proTipsEn = listOf(
+                "File your application at least 30 days before your visa expires to avoid status violations!",
+                "Medical certificate must be issued by a local Romanian clinic stating fitness for work.",
+                "Fees can be paid at Treasury or CEC Bank using account numbers on portaligi.mai.gov.ro."
+            ),
+            documents = listOf(
+                DocumentItem(
+                    id = "doc-nonue-1",
+                    procedureId = "proc-non-ue-sedere-munca",
+                    name = "Cerere pentru prelungirea dreptului de ședere temporară",
+                    nameEn = "Application form for temporary residence extension",
+                    type = "formular",
+                    isMandatory = true,
+                    description = "Generată online pe portaligi.mai.gov.ro.",
+                    descriptionEn = "Generated online on portaligi.mai.gov.ro.",
+                    orderIndex = 1
+                ),
+                DocumentItem(
+                    id = "doc-nonue-2",
+                    procedureId = "proc-non-ue-sedere-munca",
+                    name = "Pașaportul național cu viza D/AM aplicată (original + copie)",
+                    nameEn = "National passport with valid D/AM visa stamp (original + copy)",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Valabil cel puțin 3 luni peste perioada solicitată a dreptului de ședere.",
+                    descriptionEn = "Must be valid at least 3 months past the requested residence period.",
+                    orderIndex = 2
+                ),
+                DocumentItem(
+                    id = "doc-nonue-3",
+                    procedureId = "proc-non-ue-sedere-munca",
+                    name = "Contract individual de muncă înregistrat în REVISAL",
+                    nameEn = "Individual employment contract registered in REVISAL",
+                    type = "copie",
+                    isMandatory = true,
+                    description = "Încheiat cu normă întreagă și salariu cel puțin la nivelul salariului de bază minim brut pe țară.",
+                    descriptionEn = "Full-time contract meeting statutory minimum wage standards.",
+                    orderIndex = 3
+                ),
+                DocumentItem(
+                    id = "doc-nonue-4",
+                    procedureId = "proc-non-ue-sedere-munca",
+                    name = "Adeverință medicală emisă în România",
+                    nameEn = "Medical certificate issued in Romania",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Atestă că nu suferi de boli ce pun în pericol sănătatea publică.",
+                    descriptionEn = "Certifying no contagious diseases endangering public health.",
+                    orderIndex = 4
+                ),
+                DocumentItem(
+                    id = "doc-nonue-5",
+                    procedureId = "proc-non-ue-sedere-munca",
+                    name = "Dovada spațiului de locuit (contract de închiriere ANAF)",
+                    nameEn = "Proof of accommodation (ANAF registered lease)",
+                    type = "copie",
+                    isMandatory = true,
+                    description = "Înregistrat fiscal la ANAF cu adresa completă.",
+                    descriptionEn = "Fiscally registered with ANAF with full address.",
+                    orderIndex = 5
+                )
+            ),
+            steps = listOf(
+                StepItem(
+                    id = "step-nonue-1",
+                    procedureId = "proc-non-ue-sedere-munca",
+                    stepNumber = 1,
+                    title = "Completarea dosarului online pe portaligi.mai.gov.ro",
+                    titleEn = "Online submission on portaligi.mai.gov.ro",
+                    description = "Încarcă documentele scanate și alege data programării la ghișeul IGI.",
+                    descriptionEn = "Upload scans and book your counter appointment at territorial IGI office.",
+                    externalUrl = "https://portaligi.mai.gov.ro",
+                    externalLabel = "Portal IGI"
+                ),
+                StepItem(
+                    id = "step-nonue-2",
+                    procedureId = "proc-non-ue-sedere-munca",
+                    stepNumber = 2,
+                    title = "Prezentarea la ghișeu și preluarea datelor biometrice",
+                    titleEn = "Counter attendance and biometric capture",
+                    description = "Prezintă originalele dosarului, semnează cererea și ți se iau amprentele și fotografia.",
+                    descriptionEn = "Submit originals, sign application, record biometric fingerprinting and photo."
+                ),
+                StepItem(
+                    id = "step-nonue-3",
+                    procedureId = "proc-non-ue-sedere-munca",
+                    stepNumber = 3,
+                    title = "Ridicarea permisului de ședere (card plastic)",
+                    titleEn = "Collection of plastic residence card",
+                    description = "După aprobare (30-45 zile), ridici permisul de ședere cu noul tău CNP românesc.",
+                    descriptionEn = "Upon approval, collect your residence card with your Romanian CNP."
+                )
+            ),
+            sources = listOf(
+                SourceItem("src-nonue-1", "proc-non-ue-sedere-munca", "Inspectoratul General pentru Imigrări", "https://portaligi.mai.gov.ro", "2026-10-18")
+            ),
+            officialUrl = "https://portaligi.mai.gov.ro",
+            recommendationRationaleRo = "Obligatoriu pentru cetățenii din afara UE care au intrat în România cu viză de muncă.",
+            recommendationRationaleEn = "Mandatory for non-EU citizens who entered Romania on a work visa."
+        ),
+
+        // 7. Viza de flotant (resedinta)
+        Procedure(
+            id = "proc-viza-flotant",
+            slug = "stabilirea-resedintei-viza-de-flotant",
+            title = "Stabilirea Reședinței (Viza de Flotant)",
+            titleEn = "Establishing Temporary Residence (Flotant Visa)",
+            shortDescription = "Aplicarea vizei de reședință pe spatele cărții de identitate dacă locuiești la o altă adresă mai mult de 15 zile.",
+            shortDescriptionEn = "Applying temporary residence stamp on the back of your ID card when residing at another address for >15 days.",
+            fullDescription = "Viza de flotant este necesară cetățenilor români care locuiesc temporar la o altă adresă decât domiciliul din buletin (pentru chirie, studenție, acces la școală sau vot). Este valabilă cel mult 1 an de la emitere.",
+            fullDescriptionEn = "Flotant temporary residence is required for Romanian citizens living temporarily at a different address than their primary ID card domicile. Valid for up to 1 year.",
+            category = "locuinta",
+            estimatedTime = "3 - 5 zile lucrătoare",
+            estimatedTimeEn = "3 - 5 business days",
+            difficulty = ProcedureDifficulty.USOR,
+            totalFee = "Gratuit (0 Lei)",
+            totalFeeEn = "Free of charge (0 RON)",
+            competentAuthority = "Evidența Populației (SPCLEP)",
+            competentAuthorityEn = "People's Records Office (Local SPCLEP)",
+            isOnlineAvailable = false,
+            lastVerifiedAt = "2026-10-15",
+            verificationStatus = "verified",
+            verifiedBy = "Specialist Proceduri ActeSimple",
+            isPopular = true,
+            targetProfiles = listOf(ApplicantProfile.ALL, ApplicantProfile.ROMANIAN),
+            keywords = listOf("flotant", "viza de flotant", "resedinta", "chirie", "spclep", "evidenta populatiei"),
+            synonyms = listOf("flotant", "viza flotant", "schimbare resedinta", "resedinta temporara"),
+            proTips = listOf(
+                "Proprietarul locuinței trebuie să te însoțească la ghișeu și să aibă la el actul de identitate și actul de proprietate în original!",
+                "Dacă deții un contract de închiriere înregistrat la ANAF sau încheiat la notar, prezența proprietarului nu mai este necesară.",
+                "Viza de flotant este gratuită conform legii; nu se percepe nicio taxă la ghișeu."
+            ),
+            proTipsEn = listOf(
+                "The landlord must accompany you in person to the counter unless your lease is registered with ANAF or notarized!",
+                "With an ANAF-registered lease, the landlord's presence is not required.",
+                "The flotant visa is completely free of charge by Romanian law."
+            ),
+            documents = listOf(
+                DocumentItem(
+                    id = "doc-flo-1",
+                    procedureId = "proc-viza-flotant",
+                    name = "Cererea pentru stabilirea reședinței",
+                    nameEn = "Application form for temporary residence",
+                    type = "formular",
+                    isMandatory = true,
+                    description = "Completată și semnată de solicitant și de proprietarul locuinței.",
+                    descriptionEn = "Filled in and signed by applicant and property owner.",
+                    whereToGet = "Ghișeu SPCLEP",
+                    orderIndex = 1
+                ),
+                DocumentItem(
+                    id = "doc-flo-2",
+                    procedureId = "proc-viza-flotant",
+                    name = "Cartea de identitate valabilă în original",
+                    nameEn = "Valid national ID card in original",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Pe spatele căreia se va aplica autocolantul cu viza de reședință.",
+                    descriptionEn = "Sticker will be affixed on the reverse side.",
+                    orderIndex = 2
+                ),
+                DocumentItem(
+                    id = "doc-flo-3",
+                    procedureId = "proc-viza-flotant",
+                    name = "Actul de proprietate al locuinței (original + copie)",
+                    nameEn = "Property deed / Title of ownership (original + copy)",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Contract de vânzare-cumpărare sau extras de carte funciară recent.",
+                    descriptionEn = "Purchase contract or recent land registry excerpt.",
+                    orderIndex = 3
+                )
+            ),
+            steps = listOf(
+                StepItem(
+                    id = "step-flo-1",
+                    procedureId = "proc-viza-flotant",
+                    stepNumber = 1,
+                    title = "Programare la SPCLEP arondat adresei",
+                    titleEn = "Appointment at local SPCLEP",
+                    description = "Programează-te online la evidența populației din sectorul/orașul unde locuiești în chirie.",
+                    descriptionEn = "Book appointment at the population office of the city/district where you rent."
+                ),
+                StepItem(
+                    id = "step-flo-2",
+                    procedureId = "proc-viza-flotant",
+                    stepNumber = 2,
+                    title = "Prezentarea la ghișeu cu proprietarul",
+                    titleEn = "Counter attendance with landlord",
+                    description = "Depuneți actele, proprietarul semnează acordul de primire în spațiu și predai buletinul.",
+                    descriptionEn = "Submit files, landlord signs consent, hand over ID card for sticker application."
+                ),
+                StepItem(
+                    id = "step-flo-3",
+                    procedureId = "proc-viza-flotant",
+                    stepNumber = 3,
+                    title = "Ridicarea cărții de identitate cu autocolantul aplicat",
+                    titleEn = "Collecting ID card with flotant sticker",
+                    description = "În câteva zile ridici buletinul pe spatele căruia este aplicat autocolantul cu noua reședință.",
+                    descriptionEn = "Collect ID card with sticker showing your temporary residence."
+                )
+            ),
+            sources = listOf(
+                SourceItem("src-flo-1", "proc-viza-flotant", "DGEP", "https://hub.mai.gov.ro", "2026-10-15")
+            ),
+            officialUrl = "https://hub.mai.gov.ro"
+        ),
+
+        // 8. Infiintare Firma SRL
+        Procedure(
+            id = "proc-srl-onrc",
+            slug = "infiintare-firma-srl-onrc",
+            title = "Înființare Firmă SRL (Registrul Comerțului ONRC)",
+            titleEn = "Incorporation of a Romanian LLC (SRL / ONRC)",
+            shortDescription = "Ghid complet pentru deschiderea unei societăți cu răspundere limitată (SRL) 100% online pe noul portal ONRC.",
+            shortDescriptionEn = "Complete guide to forming a Romanian limited liability company (SRL) 100% online via the ONRC portal.",
+            fullDescription = "Înființarea unei societăți cu răspundere limitată (SRL) în România se realizează prin Oficiul Național al Registrului Comerțului (ONRC). De la 1 euro capital social și prin digitalizarea noului portal ONRC 2.0, dosarul se poate depune complet online cu semnătură electronică.",
+            fullDescriptionEn = "Registering an SRL company in Romania is conducted through the National Trade Register Office (ONRC). Can be submitted 100% online with a qualified digital signature.",
+            category = "afaceri",
+            estimatedTime = "3 - 5 zile lucrătoare",
+            estimatedTimeEn = "3 - 5 business days",
+            difficulty = ProcedureDifficulty.MEDIU,
+            totalFee = "128 Lei (taxe ONRC) + capital social minim 1 Leu",
+            totalFeeEn = "~128 RON official fees + 1 RON min share capital",
+            competentAuthority = "Oficiul Național al Registrului Comerțului (ONRC)",
+            competentAuthorityEn = "National Trade Register Office (ONRC)",
+            isOnlineAvailable = true,
+            lastVerifiedAt = "2026-10-19",
+            verificationStatus = "verified",
+            verifiedBy = "Consultant Juridic ActeSimple",
+            isPopular = true,
+            targetProfiles = listOf(ApplicantProfile.ALL, ApplicantProfile.ROMANIAN, ApplicantProfile.EU_EEA_CH, ApplicantProfile.NON_EU),
+            keywords = listOf("srl", "firma", "infiintare firma", "onrc", "registrul comertului", "act constitutiv", "afaceri"),
+            synonyms = listOf("infiintare srl", "deschidere firma", "srl onrc", "inregistrare companie"),
+            proTips = listOf(
+                "Rezervarea de denumire se face instant pe myportal.onrc.ro și este valabilă 1 lună de zile.",
+                "Dacă ai sediul social într-un apartament de bloc fără activitate economică la sediu, nu mai este necesar acordul vecinilor!",
+                "După înregistrare, certificatul de înregistrare cu CUI este emis în format digital cu semnătură electronică."
+            ),
+            proTipsEn = listOf(
+                "Company name reservation is done instantly on myportal.onrc.ro and is valid for 1 month.",
+                "If the registered office has no commercial activity on-site, neighbors' approval is no longer required!",
+                "The official certificate with Romanian Tax Code (CUI) is delivered electronically."
+            ),
+            documents = listOf(
+                DocumentItem(
+                    id = "doc-srl-1",
+                    procedureId = "proc-srl-onrc",
+                    name = "Dovada rezervării denumirii firmei",
+                    nameEn = "Proof of company name reservation",
+                    type = "formular",
+                    isMandatory = true,
+                    description = "Obținută online pe portalul ONRC.",
+                    descriptionEn = "Obtained online on the ONRC portal.",
+                    whereToGet = "myportal.onrc.ro",
+                    orderIndex = 1
+                ),
+                DocumentItem(
+                    id = "doc-srl-2",
+                    procedureId = "proc-srl-onrc",
+                    name = "Actul Constitutiv al SRL",
+                    nameEn = "Articles of Incorporation (Act Constitutiv)",
+                    type = "formular",
+                    isMandatory = true,
+                    description = "Stabilește asociații, administratorul, capitalul social, sediul și codurile CAEN.",
+                    descriptionEn = "Specifies shareholders, director, capital, address and CAEN activity codes.",
+                    orderIndex = 2
+                ),
+                DocumentItem(
+                    id = "doc-srl-3",
+                    procedureId = "proc-srl-onrc",
+                    name = "Dovada sediului social (contract de comodat sau închiriere)",
+                    nameEn = "Proof of registered office (bailment or lease agreement)",
+                    type = "copie",
+                    isMandatory = true,
+                    description = "Însoțit de actul de proprietate al imobilului.",
+                    descriptionEn = "Accompanied by property ownership title.",
+                    orderIndex = 3
+                ),
+                DocumentItem(
+                    id = "doc-srl-4",
+                    procedureId = "proc-srl-onrc",
+                    name = "Copii ale actelor de identitate ale asociaților și administratorului",
+                    nameEn = "Copies of IDs/passports of shareholders and administrator",
+                    type = "copie",
+                    isMandatory = true,
+                    description = "Certificate de conformitate prin mențiunea 'conform cu originalul' și semnătură.",
+                    descriptionEn = "Certified with 'conform with original' and signature.",
+                    orderIndex = 4
+                )
+            ),
+            steps = listOf(
+                StepItem(
+                    id = "step-srl-1",
+                    procedureId = "proc-srl-onrc",
+                    stepNumber = 1,
+                    title = "Rezervarea denumirii firmei pe myportal.onrc.ro",
+                    titleEn = "Reserve company name on myportal.onrc.ro",
+                    description = "Alege 3 variante de nume și verifică disponibilitatea în sistemul național.",
+                    descriptionEn = "Enter 3 name options and check availability in the national registry.",
+                    externalUrl = "https://myportal.onrc.ro",
+                    externalLabel = "Portal ONRC"
+                ),
+                StepItem(
+                    id = "step-srl-2",
+                    procedureId = "proc-srl-onrc",
+                    stepNumber = 2,
+                    title = "Redactarea Actului Constitutiv și contractului de sediu",
+                    titleEn = "Draft Articles of Incorporation & lease",
+                    description = "Definește asociații, obiectul principal de activitate (CAEN) și stabilește sediul social.",
+                    descriptionEn = "Define shareholders, CAEN activity codes and set company domicile."
+                ),
+                StepItem(
+                    id = "step-srl-3",
+                    procedureId = "proc-srl-onrc",
+                    stepNumber = 3,
+                    title = "Depunerea dosarului online și plata taxelor",
+                    titleEn = "Submit dossier online & pay fees",
+                    description = "Încarcă documentele pe portalul ONRC, semnează electronic și achită taxa de publicare în Monitorul Oficial.",
+                    descriptionEn = "Upload documents to ONRC portal, digitally sign, and pay official publishing fees."
+                ),
+                StepItem(
+                    id = "step-srl-4",
+                    procedureId = "proc-srl-onrc",
+                    stepNumber = 4,
+                    title = "Eliberarea Certificatului de Înregistrare (CUI)",
+                    titleEn = "Issuance of Registration Certificate (CUI)",
+                    description = "În 3-5 zile lucrătoare primești decizia registratorului și certificatul oficial de înregistrare cu CUI.",
+                    descriptionEn = "In 3-5 business days receive registration decision and official CUI certificate."
+                )
+            ),
+            sources = listOf(
+                SourceItem("src-srl-1", "proc-srl-onrc", "ONRC", "https://myportal.onrc.ro", "2026-10-19")
+            ),
+            officialUrl = "https://myportal.onrc.ro"
+        ),
+
+        // 9. NIF - Numar Identificare Fiscala
+        Procedure(
+            id = "proc-nif-anaf",
+            slug = "obtinere-numar-identificare-fiscala-nif-straini",
+            title = "Număr de Identificare Fiscală (NIF / ANAF pentru Nerezidenți)",
+            titleEn = "Tax Identification Number (NIF / ANAF for Non-Residents)",
+            shortDescription = "Ghid pentru cetățenii străini care au obligații fiscale sau cumpără proprietăți în România fără să aibă CNP.",
+            shortDescriptionEn = "Guide for foreign individuals with tax obligations, real estate purchases or bank accounts in Romania without a CNP.",
+            fullDescription = "Numărul de Identificare Fiscală (NIF) se atribuie de către ANAF persoanelor fizice nerezidente care nu dețin un CNP românesc, dar desfășoară activități generatoare de venituri, cumpără imobile, acțiuni sau doresc să deschidă conturi bancare în România (Formularul 030).",
+            fullDescriptionEn = "The Tax Identification Number (NIF) is assigned by the Romanian Tax Agency (ANAF) to non-resident foreign nationals without a CNP who buy property, open bank accounts or owe taxes in Romania (Form 030).",
+            category = "international",
+            estimatedTime = "5 - 15 zile lucrătoare",
+            estimatedTimeEn = "5 - 15 business days",
+            difficulty = ProcedureDifficulty.MEDIU,
+            totalFee = "Gratuit (0 Lei)",
+            totalFeeEn = "Free of charge (0 RON)",
+            competentAuthority = "ANAF (Administrația Finanțelor Publice)",
+            competentAuthorityEn = "ANAF (National Agency for Fiscal Administration)",
+            isOnlineAvailable = true,
+            lastVerifiedAt = "2026-10-17",
+            verificationStatus = "verified",
+            verifiedBy = "Specialist Fiscal ActeSimple",
+            isPopular = false,
+            targetProfiles = listOf(ApplicantProfile.ALL, ApplicantProfile.EU_EEA_CH, ApplicantProfile.NON_EU),
+            stayPurposes = listOf("business", "other"),
+            keywords = listOf("nif", "anaf", "cod fiscal straini", "formularul 030", "tax id romania", "nerezidenti"),
+            synonyms = listOf("nif", "cod fiscal nerezidenti", "tax id", "nif anaf"),
+            proTips = listOf(
+                "NIF-ul se solicită prin depunerea Formularului 030 la administrația financiară competentă în funcție de locul proprietății sau al împuternicitului.",
+                "Dacă nu ești prezent în România, cererea poate fi depusă prin împuternicit fiscal (notar, avocat sau contabil).",
+                "Odată ce obții un Certificat de Înregistrare UE sau Permis de Ședere IGI, CNP-ul de pe acel act înlocuiește automat NIF-ul."
+            ),
+            proTipsEn = listOf(
+                "NIF is requested by submitting Form 030 to the territorial ANAF office responsible for property or proxy address.",
+                "Can be submitted through a fiscal proxy (lawyer, notary or accountant) via power of attorney.",
+                "Once you obtain an IGI residence certificate with CNP, your CNP automatically replaces the NIF."
+            ),
+            documents = listOf(
+                DocumentItem(
+                    id = "doc-nif-1",
+                    procedureId = "proc-nif-anaf",
+                    name = "Declarația de înregistrare fiscală (Formularul 030)",
+                    nameEn = "Tax registration declaration (Form 030)",
+                    type = "formular",
+                    isMandatory = true,
+                    description = "Completat și semnat de solicitant sau împuternicit.",
+                    descriptionEn = "Completed and signed by applicant or fiscal proxy.",
+                    whereToGet = "anaf.ro",
+                    orderIndex = 1
+                ),
+                DocumentItem(
+                    id = "doc-nif-2",
+                    procedureId = "proc-nif-anaf",
+                    name = "Copia pașaportului național al solicitantului",
+                    nameEn = "Copy of applicant's national passport",
+                    type = "copie",
+                    isMandatory = true,
+                    description = "Copie lizibilă a paginii cu datele de identitate.",
+                    descriptionEn = "Legible copy of identity information page.",
+                    orderIndex = 2
+                ),
+                DocumentItem(
+                    id = "doc-nif-3",
+                    procedureId = "proc-nif-anaf",
+                    name = "Documentul ce justifică solicitarea NIF",
+                    nameEn = "Document justifying the NIF application",
+                    type = "copie",
+                    isMandatory = true,
+                    description = "Antecontract de vânzare-cumpărare imobil, deschidere cont bancar, participare în societate etc.",
+                    descriptionEn = "Property pre-contract, bank account request, company shares purchase.",
+                    orderIndex = 3
+                )
+            ),
+            steps = listOf(
+                StepItem(
+                    id = "step-nif-1",
+                    procedureId = "proc-nif-anaf",
+                    stepNumber = 1,
+                    title = "Descărcarea și completarea Formularului 030",
+                    titleEn = "Download and fill in Form 030",
+                    description = "Descarcă PDF-ul editabil de pe site-ul ANAF și completează datele de identificare.",
+                    descriptionEn = "Download editable PDF from ANAF website and complete identification details.",
+                    externalUrl = "https://www.anaf.ro",
+                    externalLabel = "Site ANAF"
+                ),
+                StepItem(
+                    id = "step-nif-2",
+                    procedureId = "proc-nif-anaf",
+                    stepNumber = 2,
+                    title = "Depunerea la administrația fiscală ANAF",
+                    titleEn = "Submit to local ANAF tax office",
+                    description = "Se depune fizic la registratură sau prin poștă/curier cu scrisoare recomandată cu confirmare de primire.",
+                    descriptionEn = "Submit in person or via registered postal mail with acknowledgment of receipt."
+                ),
+                StepItem(
+                    id = "step-nif-3",
+                    procedureId = "proc-nif-anaf",
+                    stepNumber = 3,
+                    title = "Emiterea Certificatului de Înregistrare Fiscală cu NIF",
+                    titleEn = "Issuance of Tax Certificate with NIF",
+                    description = "ANAF eliberează certificatul pe hârtie cartonată conținând codul NIF de 10 cifre.",
+                    descriptionEn = "ANAF issues the certificate containing your official 10-digit NIF."
+                )
+            ),
+            sources = listOf(
+                SourceItem("src-nif-1", "proc-nif-anaf", "ANAF", "https://www.anaf.ro", "2026-10-17")
+            ),
+            officialUrl = "https://www.anaf.ro",
+            recommendationRationaleRo = "Necesar cetățenilor străini fără CNP pentru conturi bancare, achiziții imobile sau taxe în România.",
+            recommendationRationaleEn = "Required for non-residents without CNP for banking, real estate or taxes in Romania."
+        ),
+
+        // 10. Alocatia de stat pentru copii
+        Procedure(
+            id = "proc-alocatie-copii",
+            slug = "alocatia-de-stat-pentru-copii-anpis",
+            title = "Alocația de Stat pentru Copii (Depunere Dosar ANPIS)",
+            titleEn = "State Child Allowance (ANPIS Application)",
+            shortDescription = "Ghid pentru obținerea alocației lunare acordate de statul român pentru copii până la vârsta de 18 ani.",
+            shortDescriptionEn = "Guide to claiming the Romanian monthly child allowance for children up to 18 years of age.",
+            fullDescription = "Alocația de stat pentru copii este un drept universal acordat tuturor copiilor până la 18 ani (sau până la terminarea liceului). Cererea se depune la primăria localității de domiciliu a părinților sau direct la agenția județeană pentru plăți și inspecție socială (AJPIS).",
+            fullDescriptionEn = "State child allowance is a universal right granted to all children until 18 years. Filed with the municipal social assistance department or county AJPIS office.",
+            category = "familie",
+            estimatedTime = "30 - 45 zile până la prima plată",
+            estimatedTimeEn = "30 - 45 days until first payment",
+            difficulty = ProcedureDifficulty.USOR,
+            totalFee = "Gratuit (0 Lei)",
+            totalFeeEn = "Free of charge (0 RON)",
+            competentAuthority = "AJPIS / Agenția Națională pentru Plăți și Inspecție Socială (ANPIS)",
+            competentAuthorityEn = "National Agency for Social Benefits & Inspection (ANPIS)",
+            isOnlineAvailable = true,
+            lastVerifiedAt = "2026-10-14",
+            verificationStatus = "verified",
+            verifiedBy = "Specialist Beneficii Sociale ActeSimple",
+            isPopular = false,
+            targetProfiles = listOf(ApplicantProfile.ALL, ApplicantProfile.ROMANIAN, ApplicantProfile.FAMILY_MEMBER),
+            keywords = listOf("alocatie", "alocatie copii", "anpis", "ajpis", "drepturi copil", "nou nascut", "alocatie de stat"),
+            synonyms = listOf("alocatie", "alocatie stat", "bani copii", "dosar alocatie"),
+            proTips = listOf(
+                "Dosarul se poate depune și online prin email sau portalul primăriei de domiciliu (Direcția de Asistență Socială).",
+                "Pentru plata în cont bancar, anexează un extras de cont pe numele părintelui solicitant.",
+                "Plata se face retroactiv începând cu luna următoare nașterii copilului."
+            ),
+            proTipsEn = listOf(
+                "Application can be submitted via email to the local municipal Social Assistance Department.",
+                "Attach a bank statement under the parent's name for direct bank deposit.",
+                "Payments are backdated starting from the month following birth."
+            ),
+            documents = listOf(
+                DocumentItem(
+                    id = "doc-alo-1",
+                    procedureId = "proc-alocatie-copii",
+                    name = "Cerere tip pentru acordarea alocației de stat",
+                    nameEn = "Application form for child allowance",
+                    type = "formular",
+                    isMandatory = true,
+                    description = "Completată și semnată de unul dintre părinți.",
+                    descriptionEn = "Filled in and signed by one parent.",
+                    orderIndex = 1
+                ),
+                DocumentItem(
+                    id = "doc-alo-2",
+                    procedureId = "proc-alocatie-copii",
+                    name = "Certificatul de naștere al copilului (copie și original)",
+                    nameEn = "Child's birth certificate (copy and original)",
+                    type = "original",
+                    isMandatory = true,
+                    description = "Emis de autoritățile române.",
+                    descriptionEn = "Issued by Romanian civil registry.",
+                    orderIndex = 2
+                ),
+                DocumentItem(
+                    id = "doc-alo-3",
+                    procedureId = "proc-alocatie-copii",
+                    name = "Actele de identitate ale ambilor părinți (copii)",
+                    nameEn = "Copies of IDs of both parents",
+                    type = "copie",
+                    isMandatory = true,
+                    description = "Cărți de identitate valabile.",
+                    descriptionEn = "Valid national IDs.",
+                    orderIndex = 3
+                ),
+                DocumentItem(
+                    id = "doc-alo-4",
+                    procedureId = "proc-alocatie-copii",
+                    name = "Extras de cont bancar pentru virament",
+                    nameEn = "Bank account statement for direct deposit",
+                    type = "copie",
+                    isMandatory = false,
+                    description = "Dacă se dorește virarea banilor pe card în locul mandatului poștal.",
+                    descriptionEn = "If direct card deposit is preferred over postal delivery.",
+                    orderIndex = 4
+                )
+            ),
+            steps = listOf(
+                StepItem(
+                    id = "step-alo-1",
+                    procedureId = "proc-alocatie-copii",
+                    stepNumber = 1,
+                    title = "Completarea cererii și pregătirea documentelor",
+                    titleEn = "Complete application and dossier",
+                    description = "Completează formularul și atașează copiile certificatului de naștere și ale actelor părinților.",
+                    descriptionEn = "Fill in form and attach copies of birth certificate and parents' IDs."
+                ),
+                StepItem(
+                    id = "step-alo-2",
+                    procedureId = "proc-alocatie-copii",
+                    stepNumber = 2,
+                    title = "Depunerea la Direcția de Asistență Socială",
+                    titleEn = "Submit to Social Assistance Directorate",
+                    description = "Depune dosarul la primăria de domiciliu sau transmite-l online pe email-ul DAS.",
+                    descriptionEn = "Submit to municipal office or transmit via email."
+                )
+            ),
+            sources = listOf(
+                SourceItem("src-alo-1", "proc-alocatie-copii", "ANPIS", "https://www.anpis.ro", "2026-10-14")
+            ),
+            officialUrl = "https://www.anpis.ro"
+        )
+    )
+
+    val FRONTEND_SYNONYMS: Map<String, List<String>> = mapOf(
+        "buletin" to listOf("carte de identitate", "buletin expirat", "ci", "spclep"),
+        "talon" to listOf("certificat de inmatriculare", "inmatriculare auto", "civ", "dgpci"),
+        "cazier" to listOf("certificat de cazier judiciar", "cazier online", "hub mai"),
+        "firma" to listOf("infiintare srl", "srl", "onrc", "act constitutiv"),
+        "flotant" to listOf("viza de flotant", "stabilire resedinta", "chirie"),
+        "permis" to listOf("permis de conducere", "carnet", "fisa auto"),
+        "alocatie" to listOf("alocatia de stat", "copii", "nou nascut"),
+        "rezidenta" to listOf("certificat de inregistrare", "permis de sedere", "igi", "residence certificate"),
+        "sedere" to listOf("permis de sedere", "viza", "igi", "drept de sedere"),
+        "viza" to listOf("viza tip d", "eviza mae", "viza de munca", "visa"),
+        "straini" to listOf("cetateni ue", "non-ue", "igi", "permis de sedere", "nif"),
+        "nif" to listOf("numar de identificare fiscala", "anaf", "cod fiscal nerezidenti", "tax id")
+    )
+
+    val PUBLIC_OFFICES: List<PublicOffice> = listOf(
+        // București
+        PublicOffice(
+            id = "spclep-sec3-buc",
+            name = "SPCLEP Sector 3 - Evidența Persoanelor (Buletine)",
+            nameEn = "SPCLEP District 3 - Civil Records (ID Cards)",
+            type = "SPCLEP",
+            typeLabelRo = "Evidența Populației (SPCLEP)",
+            typeLabelEn = "Civil Records (SPCLEP)",
+            categories = listOf("identitate", "locuinta", "familie"),
+            procedureIds = listOf("proc-buletin-expirare", "proc-viza-flotant"),
+            city = "București",
+            county = "București",
+            address = "Strada Matei Basarab nr. 32, Sector 3, București",
+            lat = 44.4312,
+            lng = 26.1118,
+            mapX = 61.8f,
+            mapY = 82.2f,
+            scheduleRo = "Luni, Marți, Miercuri: 08:30 - 16:30 | Joi: 08:30 - 18:30 | Vineri: 08:30 - 14:00",
+            scheduleEn = "Mon - Wed: 08:30 - 16:30 | Thu: 08:30 - 18:30 | Fri: 08:30 - 14:00",
+            publicTransitRo = "Metrou Piața Unirii 2 (10 min) / Autobuz 116, 117, 313",
+            publicTransitEn = "Metro Piața Unirii (10 min walk) / Bus 116, 117, 313",
+            phone = "021 312 00 56",
+            appointmentUrl = "https://hub.mai.gov.ro",
+            googleMapsQuery = "SPCLEP Sector 3 Matei Basarab Bucuresti"
+        ),
+        PublicOffice(
+            id = "spclep-sec1-buc",
+            name = "SPCLEP Sector 1 - Evidența Persoanelor (Piața Amzei)",
+            nameEn = "SPCLEP District 1 - Civil Records (Amzei)",
+            type = "SPCLEP",
+            typeLabelRo = "Evidența Populației (SPCLEP)",
+            typeLabelEn = "Civil Records (SPCLEP)",
+            categories = listOf("identitate", "locuinta"),
+            procedureIds = listOf("proc-buletin-expirare", "proc-viza-flotant"),
+            city = "București",
+            county = "București",
+            address = "Piața Amzei nr. 13, Sector 1, București",
+            lat = 44.4446,
+            lng = 26.0955,
+            mapX = 60.5f,
+            mapY = 80.8f,
+            scheduleRo = "Luni - Miercuri: 08:30 - 16:30 | Joi: 08:30 - 18:30 | Vineri: 08:30 - 14:00",
+            scheduleEn = "Mon - Wed: 08:30 - 16:30 | Thu: 08:30 - 18:30 | Fri: 08:30 - 14:00",
+            publicTransitRo = "Metrou Piața Romană (3 min de mers pe jos)",
+            publicTransitEn = "Metro Piața Romană (3 min walk)",
+            phone = "021 316 12 21",
+            appointmentUrl = "https://hub.mai.gov.ro",
+            googleMapsQuery = "SPCLEP Sector 1 Piata Amzei Bucuresti"
+        ),
+        PublicOffice(
+            id = "dgp-pasapoarte-parklake",
+            name = "Serviciul Public Comunitar de Pașapoarte București (ParkLake)",
+            nameEn = "Bucharest Passports Directorate (ParkLake)",
+            type = "DGP_PASAPOARTE",
+            typeLabelRo = "Direcția Pașapoarte (DGP)",
+            typeLabelEn = "Passports Directorate (DGP)",
+            categories = listOf("identitate"),
+            procedureIds = listOf("proc-pasaport-electronic"),
+            city = "București",
+            county = "București",
+            address = "Strada Liviu Rebreanu nr. 4 (Mall ParkLake, Etaj 1), Sector 3",
+            lat = 44.4208,
+            lng = 26.1517,
+            mapX = 63.2f,
+            mapY = 83.1f,
+            scheduleRo = "Luni - Vineri: 08:30 - 16:30 (Programare pe epasapoarte.ro)",
+            scheduleEn = "Mon - Fri: 08:30 - 16:30 (Online booking on epasapoarte.ro)",
+            publicTransitRo = "Metrou Dristor / Tramvai 1, 10 / Autobuz 330",
+            publicTransitEn = "Metro Dristor / Tram 1, 10 / Bus 330",
+            phone = "021 303 70 80",
+            appointmentUrl = "https://epasapoarte.ro",
+            googleMapsQuery = "Pasapoarte ParkLake Bucuresti"
+        ),
+        PublicOffice(
+            id = "dgpci-pipera-buc",
+            name = "DGPCI București & Ilfov - Permise și Înmatriculări",
+            nameEn = "DGPCI Bucharest - Driving Licenses and Vehicle Registration",
+            type = "DGPCI_AUTO",
+            typeLabelRo = "Permise & Înmatriculări (DGPCI)",
+            typeLabelEn = "Licenses & Plates (DGPCI)",
+            categories = listOf("auto"),
+            procedureIds = listOf("proc-permis-conducere", "proc-inmatriculare-auto"),
+            city = "București",
+            county = "București",
+            address = "Șoseaua Pipera nr. 49, Sector 2, București",
+            lat = 44.4795,
+            lng = 26.1044,
+            mapX = 61.2f,
+            mapY = 77.8f,
+            scheduleRo = "Luni - Joi: 08:00 - 16:00 | Vineri: 08:00 - 14:00",
+            scheduleEn = "Mon - Thu: 08:00 - 16:00 | Fri: 08:00 - 14:00",
+            publicTransitRo = "Metrou Aurel Vlaicu (5 min de mers pe jos)",
+            publicTransitEn = "Metro Aurel Vlaicu (5 min walk)",
+            phone = "021 301 95 70",
+            appointmentUrl = "https://dgpci.mai.gov.ro",
+            googleMapsQuery = "DGPCI Permise Pipera 49 Bucuresti"
+        ),
+        PublicOffice(
+            id = "cazier-politie-udriste",
+            name = "DGPMB - Serviciul Cazier Judiciar (Sediul Central Udriște)",
+            nameEn = "Bucharest Police - Criminal Record Desk (Udriște)",
+            type = "POLITIE_CAZIER",
+            typeLabelRo = "Poliția Română - Cazier",
+            typeLabelEn = "Police - Criminal Record Desk",
+            categories = listOf("juridic"),
+            procedureIds = listOf("proc-cazier-judiciar"),
+            city = "București",
+            county = "București",
+            address = "Strada Udriște nr. 9-15, Sector 3, București",
+            lat = 44.4281,
+            lng = 26.1105,
+            mapX = 61.6f,
+            mapY = 82.4f,
+            scheduleRo = "Luni - Joi: 08:30 - 12:00, 14:00 - 16:00 | Vineri: 08:30 - 13:00",
+            scheduleEn = "Mon - Thu: 08:30 - 12:00, 14:00 - 16:00 | Fri: 08:30 - 13:00",
+            publicTransitRo = "Metrou Piața Unirii (12 min) / Troleibuz 70, 79",
+            publicTransitEn = "Metro Piața Unirii (12 min) / Trolleybus 70, 79",
+            phone = "021 323 30 30",
+            appointmentUrl = "https://hub.mai.gov.ro",
+            googleMapsQuery = "Cazier Judiciar Udriste Bucuresti"
+        ),
+        PublicOffice(
+            id = "onrc-bucuresti",
+            name = "ONRC Sediul Central & Registrul Comerțului București",
+            nameEn = "National Trade Register Office (ONRC Bucharest)",
+            type = "ONRC",
+            typeLabelRo = "Registrul Comerțului (ONRC)",
+            typeLabelEn = "Trade Register (ONRC)",
+            categories = listOf("afaceri"),
+            procedureIds = listOf("proc-srl-onrc"),
+            city = "București",
+            county = "București",
+            address = "Bulevardul Unirii nr. 74, Sector 3, București",
+            lat = 44.4262,
+            lng = 26.1245,
+            mapX = 62.1f,
+            mapY = 82.7f,
+            scheduleRo = "Luni - Joi: 08:30 - 16:30 | Vineri: 08:30 - 14:00",
+            scheduleEn = "Mon - Thu: 08:30 - 16:30 | Fri: 08:30 - 14:00",
+            publicTransitRo = "Autobuz 104, 123 / Metrou Piața Muncii",
+            publicTransitEn = "Bus 104, 123 / Metro Piața Muncii",
+            phone = "021 316 08 04",
+            appointmentUrl = "https://myportal.onrc.ro",
+            googleMapsQuery = "ONRC Bulevardul Unirii 74 Bucuresti"
+        ),
+        PublicOffice(
+            id = "anaf-nerezidenti-buc",
+            name = "ANAF - Administrația Fiscală pentru Nerezidenți (NIF)",
+            nameEn = "ANAF - Tax Office for Non-Residents (NIF)",
+            type = "ANAF",
+            typeLabelRo = "Fisc & Taxe (ANAF)",
+            typeLabelEn = "Tax Agency (ANAF)",
+            categories = listOf("taxe", "afaceri", "international"),
+            procedureIds = listOf("proc-nif-anaf", "proc-srl-onrc"),
+            city = "București",
+            county = "București",
+            address = "Strada Dimitrie Gerota nr. 13, Sector 2, București",
+            lat = 44.4398,
+            lng = 26.1089,
+            mapX = 61.4f,
+            mapY = 81.2f,
+            scheduleRo = "Luni - Joi: 08:30 - 16:30 | Vineri: 08:30 - 14:00",
+            scheduleEn = "Mon - Thu: 08:30 - 16:30 | Fri: 08:30 - 14:00",
+            publicTransitRo = "Metrou Universitate sau Piața Rosetti",
+            publicTransitEn = "Metro Universitate or Piața Rosetti",
+            phone = "021 305 70 80",
+            appointmentUrl = "https://www.anaf.ro",
+            googleMapsQuery = "ANAF Nerezidenti Strada Dimitrie Gerota 13 Bucuresti"
+        ),
+        PublicOffice(
+            id = "igi-bucuresti",
+            name = "Inspectoratul General pentru Imigrări (IGI) - București",
+            nameEn = "General Inspectorate for Immigration (IGI Bucharest)",
+            type = "IGI",
+            typeLabelRo = "Imigrări & Rezidență (IGI)",
+            typeLabelEn = "Immigration & Residence (IGI)",
+            categories = listOf("international"),
+            procedureIds = listOf("proc-ue-inregistrare-rezidenta", "proc-non-ue-sedere-munca"),
+            city = "București",
+            county = "București",
+            address = "Strada Nicolae Iorga nr. 29, Sector 1, București",
+            lat = 44.4485,
+            lng = 26.0865,
+            mapX = 60.1f,
+            mapY = 80.4f,
+            scheduleRo = "Luni - Vineri: 08:30 - 16:30 (Programare portaligi.mai.gov.ro)",
+            scheduleEn = "Mon - Fri: 08:30 - 16:30 (Booking on portaligi.mai.gov.ro)",
+            publicTransitRo = "Metrou Piața Romană sau Piața Victoriei",
+            publicTransitEn = "Metro Piața Romană or Piața Victoriei",
+            phone = "021 410 75 82",
+            appointmentUrl = "https://portaligi.mai.gov.ro",
+            googleMapsQuery = "IGI Nicolae Iorga 29 Bucuresti"
+        ),
+        // Cluj-Napoca
+        PublicOffice(
+            id = "spclep-cluj",
+            name = "SPCLEP Cluj-Napoca - Evidența Persoanelor",
+            nameEn = "SPCLEP Cluj-Napoca - Civil Records",
+            type = "SPCLEP",
+            typeLabelRo = "Evidența Populației (SPCLEP)",
+            typeLabelEn = "Civil Records (SPCLEP)",
+            categories = listOf("identitate", "locuinta"),
+            procedureIds = listOf("proc-buletin-expirare", "proc-viza-flotant"),
+            city = "Cluj-Napoca",
+            county = "Cluj",
+            address = "Strada Moților nr. 7, Cluj-Napoca",
+            lat = 46.7692,
+            lng = 23.5855,
+            mapX = 38.6f,
+            mapY = 41.2f,
+            scheduleRo = "Luni - Miercuri: 08:30 - 16:30 | Joi: 08:30 - 18:30 | Vineri: 08:30 - 14:00",
+            scheduleEn = "Mon - Wed: 08:30 - 16:30 | Thu: 08:30 - 18:30 | Fri: 08:30 - 14:00",
+            publicTransitRo = "Autobuz 9, 24, 29 (Stația Primărie)",
+            publicTransitEn = "Bus 9, 24, 29 (City Hall Stop)",
+            phone = "0264 430 060",
+            appointmentUrl = "https://e-primariaclujnapoca.ro",
+            googleMapsQuery = "SPCLEP Cluj-Napoca Strada Motilor 7"
+        ),
+        PublicOffice(
+            id = "dgpci-permise-cluj",
+            name = "SPCRPCIV Cluj - Permise și Înmatriculări Vehicule",
+            nameEn = "Cluj Driving Licenses and Vehicle Registration",
+            type = "DGPCI_AUTO",
+            typeLabelRo = "Permise & Înmatriculări (DGPCI)",
+            typeLabelEn = "Licenses & Plates (DGPCI)",
+            categories = listOf("auto"),
+            procedureIds = listOf("proc-permis-conducere", "proc-inmatriculare-auto"),
+            city = "Cluj-Napoca",
+            county = "Cluj",
+            address = "Strada Traian Vuia nr. 157, Cluj-Napoca",
+            lat = 46.7825,
+            lng = 23.6741,
+            mapX = 41.5f,
+            mapY = 39.8f,
+            scheduleRo = "Luni - Joi: 08:00 - 16:00 | Vineri: 08:00 - 14:00",
+            scheduleEn = "Mon - Thu: 08:00 - 16:00 | Fri: 08:00 - 14:00",
+            publicTransitRo = "Autobuz 8 spre Aeroport",
+            publicTransitEn = "Bus 8 towards Airport",
+            phone = "0264 414 414",
+            appointmentUrl = "https://dgpci.mai.gov.ro",
+            googleMapsQuery = "Permise si Inmatriculari Traian Vuia 157 Cluj"
+        ),
+        PublicOffice(
+            id = "igi-cluj",
+            name = "Serviciul pentru Imigrări Județul Cluj (IGI)",
+            nameEn = "Cluj County Immigration Service (IGI)",
+            type = "IGI",
+            typeLabelRo = "Imigrări & Rezidență (IGI)",
+            typeLabelEn = "Immigration & Residence (IGI)",
+            categories = listOf("international"),
+            procedureIds = listOf("proc-ue-inregistrare-rezidenta", "proc-non-ue-sedere-munca"),
+            city = "Cluj-Napoca",
+            county = "Cluj",
+            address = "Strada Traian Vuia nr. 157, Cluj-Napoca",
+            lat = 46.7825,
+            lng = 23.6741,
+            mapX = 41.5f,
+            mapY = 39.8f,
+            scheduleRo = "Luni - Vineri: 08:30 - 16:30 (Cu programare pe portaligi.mai.gov.ro)",
+            scheduleEn = "Mon - Fri: 08:30 - 16:30 (Booking on portaligi.mai.gov.ro)",
+            publicTransitRo = "Autobuz 8",
+            publicTransitEn = "Bus 8",
+            phone = "0264 432 027",
+            appointmentUrl = "https://portaligi.mai.gov.ro",
+            googleMapsQuery = "Serviciul Imigrari Cluj Traian Vuia 157"
+        ),
+        PublicOffice(
+            id = "anaf-cluj",
+            name = "ANAF - Administrația Județeană Cluj (AJFP Cluj)",
+            nameEn = "ANAF - Cluj County Tax Administration",
+            type = "ANAF",
+            typeLabelRo = "Fisc & Taxe (ANAF)",
+            typeLabelEn = "Tax Agency (ANAF)",
+            categories = listOf("taxe", "afaceri", "international"),
+            procedureIds = listOf("proc-nif-anaf", "proc-srl-onrc"),
+            city = "Cluj-Napoca",
+            county = "Cluj",
+            address = "Piața Avram Iancu nr. 19, Cluj-Napoca",
+            lat = 46.7712,
+            lng = 23.5968,
+            mapX = 39.1f,
+            mapY = 41.0f,
+            scheduleRo = "Luni - Joi: 08:30 - 16:30 | Vineri: 08:30 - 14:00",
+            scheduleEn = "Mon - Thu: 08:30 - 16:30 | Fri: 08:30 - 14:00",
+            publicTransitRo = "Toate liniile de transport spre Piața Avram Iancu",
+            publicTransitEn = "All transit lines to Avram Iancu Square",
+            phone = "0264 595 511",
+            appointmentUrl = "https://www.anaf.ro",
+            googleMapsQuery = "ANAF Cluj Piata Avram Iancu 19"
+        ),
+        // Timișoara
+        PublicOffice(
+            id = "spclep-timisoara",
+            name = "SPCLEP Timișoara - Evidența Persoanelor",
+            nameEn = "SPCLEP Timișoara - Civil Records",
+            type = "SPCLEP",
+            typeLabelRo = "Evidența Populației (SPCLEP)",
+            typeLabelEn = "Civil Records (SPCLEP)",
+            categories = listOf("identitate", "locuinta"),
+            procedureIds = listOf("proc-buletin-expirare", "proc-viza-flotant"),
+            city = "Timișoara",
+            county = "Timiș",
+            address = "Bulevardul Mihai Eminescu nr. 15, Timișoara",
+            lat = 45.7512,
+            lng = 21.2285,
+            mapX = 13.8f,
+            mapY = 58.5f,
+            scheduleRo = "Luni - Joi: 08:30 - 16:30 | Vineri: 08:30 - 14:00",
+            scheduleEn = "Mon - Thu: 08:30 - 16:30 | Fri: 08:30 - 14:00",
+            publicTransitRo = "Tramvai 1, 2 / Troleibuz 16",
+            publicTransitEn = "Tram 1, 2 / Trolleybus 16",
+            phone = "0256 499 180",
+            appointmentUrl = "https://hub.mai.gov.ro",
+            googleMapsQuery = "Evidenta Persoanelor Timisoara Mihai Eminescu 15"
+        ),
+        PublicOffice(
+            id = "igi-timis",
+            name = "Serviciul pentru Imigrări Județul Timiș (IGI)",
+            nameEn = "Timiș County Immigration Service (IGI)",
+            type = "IGI",
+            typeLabelRo = "Imigrări & Rezidență (IGI)",
+            typeLabelEn = "Immigration & Residence (IGI)",
+            categories = listOf("international"),
+            procedureIds = listOf("proc-ue-inregistrare-rezidenta", "proc-non-ue-sedere-munca"),
+            city = "Timișoara",
+            county = "Timiș",
+            address = "Strada Andrei Mocioni nr. 8, Timișoara",
+            lat = 45.7485,
+            lng = 21.2185,
+            mapX = 13.4f,
+            mapY = 58.8f,
+            scheduleRo = "Luni - Vineri: 08:30 - 16:30",
+            scheduleEn = "Mon - Fri: 08:30 - 16:30",
+            publicTransitRo = "Tramvai 1, 8 (Piața Mocioni)",
+            publicTransitEn = "Tram 1, 8 (Mocioni Square)",
+            phone = "0256 401 540",
+            appointmentUrl = "https://portaligi.mai.gov.ro",
+            googleMapsQuery = "IGI Timisoara Andrei Mocioni 8"
+        ),
+        PublicOffice(
+            id = "dgpci-timisoara",
+            name = "SPCRPCIV Timiș - Permise și Înmatriculări",
+            nameEn = "Timiș Driving Licenses & Registration",
+            type = "DGPCI_AUTO",
+            typeLabelRo = "Permise & Înmatriculări (DGPCI)",
+            typeLabelEn = "Licenses & Plates (DGPCI)",
+            categories = listOf("auto"),
+            procedureIds = listOf("proc-permis-conducere", "proc-inmatriculare-auto"),
+            city = "Timișoara",
+            county = "Timiș",
+            address = "Calea Aradului nr. 112, Timișoara",
+            lat = 45.7825,
+            lng = 21.2215,
+            mapX = 13.6f,
+            mapY = 56.8f,
+            scheduleRo = "Luni - Joi: 08:00 - 16:00 | Vineri: 08:00 - 14:00",
+            scheduleEn = "Mon - Thu: 08:00 - 16:00 | Fri: 08:00 - 14:00",
+            publicTransitRo = "Troleibuz 17, 18",
+            publicTransitEn = "Trolleybus 17, 18",
+            phone = "0256 401 100",
+            appointmentUrl = "https://dgpci.mai.gov.ro",
+            googleMapsQuery = "Permise si Inmatriculari Timisoara Calea Aradului 112"
+        ),
+        // Iași
+        PublicOffice(
+            id = "spclep-iasi",
+            name = "SPCLEP Iași - Direcția Locală de Evidență a Persoanelor",
+            nameEn = "SPCLEP Iași - Population Records",
+            type = "SPCLEP",
+            typeLabelRo = "Evidența Populației (SPCLEP)",
+            typeLabelEn = "Civil Records (SPCLEP)",
+            categories = listOf("identitate", "locuinta"),
+            procedureIds = listOf("proc-buletin-expirare", "proc-viza-flotant"),
+            city = "Iași",
+            county = "Iași",
+            address = "Șoseaua Națională nr. 43, Iași",
+            lat = 47.1525,
+            lng = 27.5855,
+            mapX = 79.5f,
+            mapY = 26.5f,
+            scheduleRo = "Luni - Joi: 08:30 - 16:30 | Vineri: 08:30 - 14:00",
+            scheduleEn = "Mon - Thu: 08:30 - 16:30 | Fri: 08:30 - 14:00",
+            publicTransitRo = "Tramvai 3, 11 / Autobuz 19, 30",
+            publicTransitEn = "Tram 3, 11 / Bus 19, 30",
+            phone = "0232 267 850",
+            appointmentUrl = "https://hub.mai.gov.ro",
+            googleMapsQuery = "Evidenta Persoanelor Iasi Soseaua Nationala 43"
+        ),
+        PublicOffice(
+            id = "igi-iasi",
+            name = "Serviciul pentru Imigrări Județul Iași (IGI)",
+            nameEn = "Iași County Immigration Service (IGI)",
+            type = "IGI",
+            typeLabelRo = "Imigrări & Rezidență (IGI)",
+            typeLabelEn = "Immigration & Residence (IGI)",
+            categories = listOf("international"),
+            procedureIds = listOf("proc-ue-inregistrare-rezidenta", "proc-non-ue-sedere-munca"),
+            city = "Iași",
+            county = "Iași",
+            address = "Strada Mihail Kogălniceanu nr. 10, Iași",
+            lat = 47.1612,
+            lng = 27.5815,
+            mapX = 79.2f,
+            mapY = 25.8f,
+            scheduleRo = "Luni - Vineri: 08:30 - 16:30",
+            scheduleEn = "Mon - Fri: 08:30 - 16:30",
+            publicTransitRo = "Tramvai 1, 7, 8 / Autobuz 28, 41",
+            publicTransitEn = "Tram 1, 7, 8 / Bus 28, 41",
+            phone = "0232 301 250",
+            appointmentUrl = "https://portaligi.mai.gov.ro",
+            googleMapsQuery = "IGI Iasi Mihail Kogalniceanu 10"
+        ),
+        // Brașov
+        PublicOffice(
+            id = "spclep-brasov",
+            name = "SPCLEP Brașov - Evidența Persoanelor",
+            nameEn = "SPCLEP Brașov - Civil Records Office",
+            type = "SPCLEP",
+            typeLabelRo = "Evidența Populației (SPCLEP)",
+            typeLabelEn = "Civil Records (SPCLEP)",
+            categories = listOf("identitate", "locuinta"),
+            procedureIds = listOf("proc-buletin-expirare", "proc-viza-flotant"),
+            city = "Brașov",
+            county = "Brașov",
+            address = "Bulevardul Eroilor nr. 8, Brașov",
+            lat = 45.6455,
+            lng = 25.5925,
+            mapX = 53.5f,
+            mapY = 57.5f,
+            scheduleRo = "Luni - Miercuri: 08:30 - 16:30 | Joi: 08:30 - 18:30 | Vineri: 08:30 - 14:00",
+            scheduleEn = "Mon - Wed: 08:30 - 16:30 | Thu: 08:30 - 18:30 | Fri: 08:30 - 14:00",
+            publicTransitRo = "Autobuz 1, 4, 17 (Livada Poștei)",
+            publicTransitEn = "Bus 1, 4, 17 (Livada Poștei)",
+            phone = "0268 412 121",
+            appointmentUrl = "https://hub.mai.gov.ro",
+            googleMapsQuery = "Evidenta Persoanelor Brasov Bulevardul Eroilor 8"
+        ),
+        PublicOffice(
+            id = "igi-brasov",
+            name = "Serviciul pentru Imigrări Județul Brașov (IGI)",
+            nameEn = "Brașov County Immigration Service (IGI)",
+            type = "IGI",
+            typeLabelRo = "Imigrări & Rezidență (IGI)",
+            typeLabelEn = "Immigration & Residence (IGI)",
+            categories = listOf("international"),
+            procedureIds = listOf("proc-ue-inregistrare-rezidenta", "proc-non-ue-sedere-munca"),
+            city = "Brașov",
+            county = "Brașov",
+            address = "Strada Nicolae Titulescu nr. 28, Brașov",
+            lat = 45.6495,
+            lng = 25.6045,
+            mapX = 53.8f,
+            mapY = 57.2f,
+            scheduleRo = "Luni - Vineri: 08:30 - 16:30",
+            scheduleEn = "Mon - Fri: 08:30 - 16:30",
+            publicTransitRo = "Autobuz 1, 2, 4",
+            publicTransitEn = "Bus 1, 2, 4",
+            phone = "0268 407 500",
+            appointmentUrl = "https://portaligi.mai.gov.ro",
+            googleMapsQuery = "IGI Brasov Nicolae Titulescu 28"
+        )
+    )
+}

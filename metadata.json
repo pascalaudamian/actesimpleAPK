@@ -1,0 +1,6 @@
+{
+  "name": "ActeSimple",
+  "description": "Portal bilingv (RO/EN) pentru proceduri administrative: documente necesare, pași de urmat, asistent de orientare pentru cetățeni români și internaționali (UE/non-UE), taxe și linkuri oficiale.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
