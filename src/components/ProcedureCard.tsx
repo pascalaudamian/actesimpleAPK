@@ -10,7 +10,9 @@ import {
   CheckCircle,
   Globe,
   AlertCircle,
+  AlertTriangle,
   Users,
+  Timer,
 } from 'lucide-react';
 
 interface ProcedureCardProps {
@@ -105,6 +107,31 @@ export const ProcedureCard: React.FC<ProcedureCardProps> = ({
   const displayFee = lang === 'en' && procedure.total_fee_en ? procedure.total_fee_en : procedure.total_fee;
   const displayTime = lang === 'en' && procedure.estimated_time_en ? procedure.estimated_time_en : procedure.estimated_time;
 
+  const deadlineApproachingInfo = React.useMemo(() => {
+    const rawDate = procedure.deadline || procedure.expiry_date;
+    if (!rawDate) return null;
+    try {
+      const targetDate = new Date(rawDate);
+      if (isNaN(targetDate.getTime())) return null;
+      const today = new Date();
+      const targetMidnight = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()).getTime();
+      const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+      const diffDays = Math.ceil((targetMidnight - todayMidnight) / (1000 * 60 * 60 * 24));
+      if (diffDays >= 0 && diffDays <= 30) {
+        return {
+          daysRemaining: diffDays,
+          formattedDate: targetDate.toLocaleDateString(lang === 'ro' ? 'ro-RO' : 'en-GB', {
+            day: 'numeric',
+            month: 'short',
+          }),
+        };
+      }
+    } catch {
+      return null;
+    }
+    return null;
+  }, [procedure.deadline, procedure.expiry_date, lang]);
+
   return (
     <div
       onClick={() => onSelect(procedure)}
@@ -119,10 +146,37 @@ export const ProcedureCard: React.FC<ProcedureCardProps> = ({
                 {lang === 'ro' ? 'Popular' : 'Popular'}
               </span>
             )}
+            {deadlineApproachingInfo && (
+              <span
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs"
+                title={lang === 'ro' ? `Termen limită pe ${deadlineApproachingInfo.formattedDate} (${deadlineApproachingInfo.daysRemaining} zile rămase)` : `Deadline: ${deadlineApproachingInfo.formattedDate} (${deadlineApproachingInfo.daysRemaining} days remaining)`}
+              >
+                <AlertTriangle className="w-3 h-3 text-amber-700" />
+                <span>
+                  {lang === 'ro'
+                    ? `Termen: ${deadlineApproachingInfo.daysRemaining}z`
+                    : `Deadline: ${deadlineApproachingInfo.daysRemaining}d`}
+                </span>
+              </span>
+            )}
             {procedure.is_online_available && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
                 <Globe className="w-3 h-3" />
                 <span>{lang === 'ro' ? 'Online' : 'Online'}</span>
+              </span>
+            )}
+            {procedure.estimated_time_minutes != null && (
+              <span
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-cyan-50 text-cyan-800 border border-cyan-200 shadow-2xs"
+                title={
+                  lang === 'ro'
+                    ? `Timp estimat de parcurgere / completare: ~${procedure.estimated_time_minutes} minute`
+                    : `Estimated completion time: ~${procedure.estimated_time_minutes} minutes`
+                }
+                data-testid="procedure-card-estimated-time"
+              >
+                <Timer className="w-3 h-3 text-cyan-600" />
+                <span>~{procedure.estimated_time_minutes} min</span>
               </span>
             )}
             {getProfileBadge()}
@@ -188,7 +242,7 @@ export const ProcedureCard: React.FC<ProcedureCardProps> = ({
             </div>
             <div className="w-16 bg-slate-100 rounded-full h-1.5 overflow-hidden">
               <div
-                className="bg-blue-600 h-1.5 rounded-full"
+                className="bg-blue-600 h-1.5 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${userProgress.percentage}%` }}
               />
             </div>

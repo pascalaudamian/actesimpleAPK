@@ -126,8 +126,68 @@ class ChecklistPreferences(context: Context) {
             .map { it.removePrefix(KEY_PREFIX) }
     }
 
+    // Bookmarked / Saved Procedures
+    fun getSavedProcedureIds(): Set<String> {
+        return prefs.getStringSet(KEY_SAVED_PROCEDURES, emptySet()) ?: emptySet()
+    }
+
+    fun isProcedureSaved(procedureId: String): Boolean {
+        return getSavedProcedureIds().contains(procedureId)
+    }
+
+    fun toggleSavedProcedure(procedureId: String): Boolean {
+        val current = getSavedProcedureIds().toMutableSet()
+        val isNowSaved = if (current.contains(procedureId)) {
+            current.remove(procedureId)
+            false
+        } else {
+            current.add(procedureId)
+            true
+        }
+        prefs.edit().putStringSet(KEY_SAVED_PROCEDURES, current).apply()
+        return isNowSaved
+    }
+
+    // Reminders Management
+    fun getAllReminders(): List<com.example.actesimple.data.model.ReminderItem> {
+        val raw = prefs.getString(KEY_REMINDERS, null) ?: return emptyList()
+        return try {
+            json.decodeFromString<List<com.example.actesimple.data.model.ReminderItem>>(raw)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    fun saveReminder(reminder: com.example.actesimple.data.model.ReminderItem) {
+        val current = getAllReminders().filter { it.id != reminder.id }.toMutableList()
+        current.add(0, reminder)
+        val raw = json.encodeToString(current)
+        prefs.edit().putString(KEY_REMINDERS, raw).apply()
+    }
+
+    fun deleteReminder(reminderId: String) {
+        val current = getAllReminders().filter { it.id != reminderId }
+        val raw = json.encodeToString(current)
+        prefs.edit().putString(KEY_REMINDERS, raw).apply()
+    }
+
+    fun toggleReminder(reminderId: String): Boolean {
+        val current = getAllReminders().map {
+            if (it.id == reminderId) it.copy(isEnabled = !it.isEnabled) else it
+        }
+        val raw = json.encodeToString(current)
+        prefs.edit().putString(KEY_REMINDERS, raw).apply()
+        return current.find { it.id == reminderId }?.isEnabled ?: false
+    }
+
+    fun clearAllData() {
+        prefs.edit().clear().apply()
+    }
+
     companion object {
         private const val PREFS_NAME = "actesimple_checklists"
         private const val KEY_PREFIX = "chk_"
+        private const val KEY_SAVED_PROCEDURES = "saved_procedures"
+        private const val KEY_REMINDERS = "user_reminders"
     }
 }

@@ -14,12 +14,12 @@
       "competent_authority": "Direcția Generală pentru Evidența Persoanelor (SPCLEP local)",
       "authority_city_note": "Ghișeul de Evidența Populației arondat adresei de domiciliu",
       "is_online_available": false,
-      "last_verified_at": "2026-10-22",
+      "last_verified_at": "2026-10-24",
       "verification_status": "verified",
       "verified_by": "Tester Oficial",
       "verification_notes": "Verificat conformitatea în testul automat.",
       "created_at": "2026-01-10T10:00:00Z",
-      "updated_at": "2026-10-22T09:04:09.243Z",
+      "updated_at": "2026-10-24T16:55:27.080Z",
       "is_popular": true,
       "keywords": [
         "buletin",
@@ -185,7 +185,8 @@
       ],
       "target_profiles": [
         "romanian"
-      ]
+      ],
+      "estimated_time_minutes": 20
     },
     {
       "id": "proc-pasaport-electronic",
@@ -312,7 +313,8 @@
       ],
       "target_profiles": [
         "romanian"
-      ]
+      ],
+      "estimated_time_minutes": 15
     },
     {
       "id": "proc-inmatriculare-auto-sh",
@@ -494,7 +496,8 @@
       ],
       "target_profiles": [
         "romanian"
-      ]
+      ],
+      "estimated_time_minutes": 45
     },
     {
       "id": "proc-infiintare-firma-srl",
@@ -660,7 +663,8 @@
       ],
       "target_profiles": [
         "romanian"
-      ]
+      ],
+      "estimated_time_minutes": 60
     },
     {
       "id": "proc-cazier-judiciar",
@@ -768,7 +772,8 @@
       ],
       "target_profiles": [
         "romanian"
-      ]
+      ],
+      "estimated_time_minutes": 10
     },
     {
       "id": "proc-permis-conducere-schimbare",
@@ -912,7 +917,8 @@
       ],
       "target_profiles": [
         "romanian"
-      ]
+      ],
+      "estimated_time_minutes": 20
     },
     {
       "id": "proc-viza-flotant",
@@ -1036,7 +1042,8 @@
       ],
       "target_profiles": [
         "romanian"
-      ]
+      ],
+      "estimated_time_minutes": 15
     },
     {
       "id": "proc-alocatie-copii",
@@ -1170,7 +1177,8 @@
       ],
       "target_profiles": [
         "romanian"
-      ]
+      ],
+      "estimated_time_minutes": 25
     },
     {
       "id": "proc-ue-inregistrare-rezidenta",
@@ -1357,7 +1365,8 @@
           "answer": "Certificatul este valabil până la 5 ani, dar nu mai mult de perioada pentru care a fost încheiat contractul de muncă sau durata studiilor.",
           "answer_en": "The certificate is valid for up to 5 years, not exceeding the duration of your employment contract or academic studies."
         }
-      ]
+      ],
+      "estimated_time_minutes": 30
     },
     {
       "id": "proc-carte-rezidenta-membru-familie",
@@ -1505,7 +1514,8 @@
           "editorial_verified_at": "2026-10-17",
           "notes": "Verificat conform Directivei 2004/38/CE și normelor OUG 102/2005."
         }
-      ]
+      ],
+      "estimated_time_minutes": 40
     },
     {
       "id": "proc-viza-lunga-sedere-tip-d",
@@ -1687,7 +1697,8 @@
           "source_language": "ro",
           "last_verified_at": "2026-10-16"
         }
-      ]
+      ],
+      "estimated_time_minutes": 60
     },
     {
       "id": "proc-permis-sedere-munca-non-eu",
@@ -1856,7 +1867,8 @@
           "editorial_verified_at": "2026-10-18",
           "notes": "Informații oficiale privind acordarea și prelungirea dreptului de ședere în scop de muncă."
         }
-      ]
+      ],
+      "estimated_time_minutes": 45
     },
     {
       "id": "proc-permis-sedere-studii-non-eu",
@@ -2012,7 +2024,8 @@
           "editorial_verified_at": "2026-10-17",
           "notes": "Cerințe oficiale pentru acordarea dreptului de ședere în scop de studii."
         }
-      ]
+      ],
+      "estimated_time_minutes": 35
     },
     {
       "id": "proc-prelungire-drept-sedere-igi",
@@ -2161,7 +2174,8 @@
           "last_consulted_at": "2026-10-16",
           "editorial_verified_at": "2026-10-16"
         }
-      ]
+      ],
+      "estimated_time_minutes": 30
     },
     {
       "id": "proc-rezidenta-permanenta-termen-lung",
@@ -2318,7 +2332,8 @@
           "editorial_verified_at": "2026-10-15",
           "notes": "Verificat conform Directivei 2003/109/CE și OUG 194/2002."
         }
-      ]
+      ],
+      "estimated_time_minutes": 60
     },
     {
       "id": "proc-transcriere-acte-stare-civila-straine",
@@ -2488,7 +2503,8 @@
           "source_language": "multilingual",
           "last_verified_at": "2026-10-14"
         }
-      ]
+      ],
+      "estimated_time_minutes": 40
     },
     {
       "id": "proc-obtinere-nif-anaf",
@@ -2642,7 +2658,8 @@
           "editorial_verified_at": "2026-10-18",
           "notes": "Conform Legii 207/2015 privind Codul de procedură fiscală."
         }
-      ]
+      ],
+      "estimated_time_minutes": 25
     },
     {
       "id": "proc-asigurare-sanatate-cnas-straini",
@@ -2785,9 +2802,10 @@
           "editorial_verified_at": "2026-10-18",
           "notes": "Reglementat prin Legea nr. 95/2006 privind reforma în domeniul sănătății."
         }
-      ]
+      ],
+      "estimated_time_minutes": 30
     }
   ],
   "version": 1,
-  "lastUpdated": "2026-10-22T09:04:09.243Z"
+  "lastUpdated": "2026-10-24T16:55:27.080Z"
 }

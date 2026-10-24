@@ -34,6 +34,8 @@ fun ProcedureCardItem(
     procedure: Procedure,
     language: Language,
     summary: ChecklistSummary?,
+    isBookmarked: Boolean = false,
+    onToggleBookmark: (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
     val isRo = language == Language.RO
@@ -148,6 +150,34 @@ fun ProcedureCardItem(
                         }
                     }
 
+                    // Estimated Completion Time Badge
+                    if (procedure.estimatedTimeMinutes != null) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.tertiaryContainer,
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.testTag("procedure_card_estimated_time")
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Timer,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    modifier = Modifier.size(12.dp)
+                                )
+                                Spacer(modifier = Modifier.width(3.dp))
+                                Text(
+                                    text = "~${procedure.estimatedTimeMinutes} min",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                    }
+
                     // Expiry Warning Badge (<30 days)
                     if (isExpiringSoon) {
                         Surface(
@@ -176,27 +206,48 @@ fun ProcedureCardItem(
                     }
                 }
 
-                // Verified Badge
+                // Verified Badge & Bookmark Icon
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(StatusVerifiedGreenContainer)
-                        .padding(horizontal = 6.dp, vertical = 3.dp)
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.CheckCircle,
-                        contentDescription = "Verificat",
-                        tint = StatusVerifiedGreen,
-                        modifier = Modifier.size(13.dp)
-                    )
-                    Spacer(modifier = Modifier.width(3.dp))
-                    Text(
-                        text = if (isRo) "Verificat" else "Verified",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = StatusVerifiedGreen,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(StatusVerifiedGreenContainer)
+                            .padding(horizontal = 6.dp, vertical = 3.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = "Verificat",
+                            tint = StatusVerifiedGreen,
+                            modifier = Modifier.size(13.dp)
+                        )
+                        Spacer(modifier = Modifier.width(3.dp))
+                        Text(
+                            text = if (isRo) "Verificat" else "Verified",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = StatusVerifiedGreen,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    if (onToggleBookmark != null) {
+                        IconButton(
+                            onClick = onToggleBookmark,
+                            modifier = Modifier
+                                .size(28.dp)
+                                .testTag("bookmark_button_${procedure.id}")
+                        ) {
+                            Icon(
+                                imageVector = if (isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                                contentDescription = if (isBookmarked) "Elimină din favorite" else "Salvează la favorite",
+                                tint = if (isBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    }
                 }
             }
 

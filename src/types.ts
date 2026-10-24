@@ -119,6 +119,7 @@ export interface Procedure {
   status: ProcedureStatus;
   estimated_time: string;
   estimated_time_en?: string;
+  estimated_time_minutes?: number;
   difficulty: ProcedureDifficulty;
   total_fee: string;
   total_fee_en?: string;
@@ -137,6 +138,8 @@ export interface Procedure {
   created_at: string;
   updated_at: string;
   is_popular: boolean;
+  deadline?: string;
+  expiry_date?: string;
   target_profiles?: ApplicantProfile[];
   stay_purposes?: StayPurpose[];
   conditions?: string[];

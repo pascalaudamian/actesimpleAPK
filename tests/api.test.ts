@@ -109,4 +109,24 @@ describe('ActeSimple Test Suite', () => {
     assert.strictEqual(updated.verified_by, 'Tester Oficial');
     assert.strictEqual(updated.verification_notes, 'Verificat conformitatea în testul automat.');
   });
+
+  it('Procedurile conțin estimated_time_minutes și schema Zod acceptă câmpul', () => {
+    const procs = dbService.getAllProcedures().procedures;
+    const withEstimatedMinutes = procs.filter((p) => typeof p.estimated_time_minutes === 'number');
+    assert.ok(withEstimatedMinutes.length > 0, 'Trebuie să existe proceduri cu estimated_time_minutes definit');
+
+    const sampleProc = withEstimatedMinutes[0];
+    assert.ok(sampleProc.estimated_time_minutes! > 0);
+
+    const validCreate = procedureCreateSchema.safeParse({
+      title: 'Procedură testare timp estimat',
+      short_description: 'Descriere detaliată pentru testarea câmpului estimated_time_minutes',
+      competent_authority: 'Autoritate Test',
+      estimated_time_minutes: 45,
+    });
+    assert.strictEqual(validCreate.success, true);
+    if (validCreate.success) {
+      assert.strictEqual(validCreate.data.estimated_time_minutes, 45);
+    }
+  });
 });

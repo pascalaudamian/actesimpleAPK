@@ -96,6 +96,7 @@ data class Procedure(
     val category: String,
     val estimatedTime: String,
     val estimatedTimeEn: String? = null,
+    val estimatedTimeMinutes: Int? = null,
     val difficulty: ProcedureDifficulty = ProcedureDifficulty.USOR,
     val totalFee: String,
     val totalFeeEn: String? = null,
@@ -123,6 +124,24 @@ data class Procedure(
     val recommendationRationaleRo: String? = null,
     val recommendationRationaleEn: String? = null,
     val expiryDate: String? = null
+)
+
+@Serializable
+enum class AppNavigationTab {
+    HOME, EXPLORE, WIZARD, CHECKLIST, SAVED, REMINDERS, SETTINGS
+}
+
+@Serializable
+data class ReminderItem(
+    val id: String,
+    val procedureId: String,
+    val procedureTitle: String,
+    val title: String,
+    val notes: String = "",
+    val targetDate: String, // YYYY-MM-DD
+    val presetDays: Int? = null, // e.g. 90, 60, 30, 7
+    val isEnabled: Boolean = true,
+    val createdAt: Long = System.currentTimeMillis()
 )
 
 @Serializable

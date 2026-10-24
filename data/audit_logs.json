@@ -1,5 +1,161 @@
 [
   {
+    "id": "log-1792860927082-ro6rs",
+    "timestamp": "2026-10-24T16:55:27.082Z",
+    "action": "verify",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "Tester Oficial",
+    "details": "Verificare oficială atestată: Verificat conformitatea în testul automat."
+  },
+  {
+    "id": "log-1792860927082-5er65",
+    "timestamp": "2026-10-24T16:55:27.082Z",
+    "action": "update",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "TestRunner",
+    "details": "Procedura \"Eliberare Carte de Identitate (la expirare, furt sau schimbare domiciliu)\" a fost actualizată."
+  },
+  {
+    "id": "log-1792860927075-ucy2q",
+    "timestamp": "2026-10-24T16:55:27.075Z",
+    "action": "login",
+    "entity_type": "auth",
+    "user": "Administrator ActeSimple",
+    "details": "Autentificare reușită în panoul de administrare."
+  },
+  {
+    "id": "log-1792767265934-9qq61",
+    "timestamp": "2026-10-23T14:54:25.934Z",
+    "action": "verify",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "Tester Oficial",
+    "details": "Verificare oficială atestată: Verificat conformitatea în testul automat."
+  },
+  {
+    "id": "log-1792767265933-cvz16",
+    "timestamp": "2026-10-23T14:54:25.933Z",
+    "action": "update",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "TestRunner",
+    "details": "Procedura \"Eliberare Carte de Identitate (la expirare, furt sau schimbare domiciliu)\" a fost actualizată."
+  },
+  {
+    "id": "log-1792767265927-y4c1p",
+    "timestamp": "2026-10-23T14:54:25.927Z",
+    "action": "login",
+    "entity_type": "auth",
+    "user": "Administrator ActeSimple",
+    "details": "Autentificare reușită în panoul de administrare."
+  },
+  {
+    "id": "log-1792766986447-vv52g",
+    "timestamp": "2026-10-23T14:49:46.447Z",
+    "action": "verify",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "Tester Oficial",
+    "details": "Verificare oficială atestată: Verificat conformitatea în testul automat."
+  },
+  {
+    "id": "log-1792766986447-lj82m",
+    "timestamp": "2026-10-23T14:49:46.447Z",
+    "action": "update",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "TestRunner",
+    "details": "Procedura \"Eliberare Carte de Identitate (la expirare, furt sau schimbare domiciliu)\" a fost actualizată."
+  },
+  {
+    "id": "log-1792766986438-b48jj",
+    "timestamp": "2026-10-23T14:49:46.438Z",
+    "action": "login",
+    "entity_type": "auth",
+    "user": "Administrator ActeSimple",
+    "details": "Autentificare reușită în panoul de administrare."
+  },
+  {
+    "id": "log-1792766362729-6d86z",
+    "timestamp": "2026-10-23T14:39:22.729Z",
+    "action": "verify",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "Tester Oficial",
+    "details": "Verificare oficială atestată: Verificat conformitatea în testul automat."
+  },
+  {
+    "id": "log-1792766362728-7ja13",
+    "timestamp": "2026-10-23T14:39:22.728Z",
+    "action": "update",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "TestRunner",
+    "details": "Procedura \"Eliberare Carte de Identitate (la expirare, furt sau schimbare domiciliu)\" a fost actualizată."
+  },
+  {
+    "id": "log-1792766362722-lbbu3",
+    "timestamp": "2026-10-23T14:39:22.722Z",
+    "action": "login",
+    "entity_type": "auth",
+    "user": "Administrator ActeSimple",
+    "details": "Autentificare reușită în panoul de administrare."
+  },
+  {
+    "id": "log-1792766345597-kke68",
+    "timestamp": "2026-10-23T14:39:05.597Z",
+    "action": "verify",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "Tester Oficial",
+    "details": "Verificare oficială atestată: Verificat conformitatea în testul automat."
+  },
+  {
+    "id": "log-1792766345596-57ht2",
+    "timestamp": "2026-10-23T14:39:05.596Z",
+    "action": "update",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "TestRunner",
+    "details": "Procedura \"Eliberare Carte de Identitate (la expirare, furt sau schimbare domiciliu)\" a fost actualizată."
+  },
+  {
+    "id": "log-1792766345590-cdvy0",
+    "timestamp": "2026-10-23T14:39:05.590Z",
+    "action": "login",
+    "entity_type": "auth",
+    "user": "Administrator ActeSimple",
+    "details": "Autentificare reușită în panoul de administrare."
+  },
+  {
+    "id": "log-1792743060671-ivyp8",
+    "timestamp": "2026-10-23T08:11:00.671Z",
+    "action": "verify",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "Tester Oficial",
+    "details": "Verificare oficială atestată: Verificat conformitatea în testul automat."
+  },
+  {
+    "id": "log-1792743060671-a162e",
+    "timestamp": "2026-10-23T08:11:00.671Z",
+    "action": "update",
+    "entity_type": "procedure",
+    "entity_id": "proc-buletin-expirare",
+    "user": "TestRunner",
+    "details": "Procedura \"Eliberare Carte de Identitate (la expirare, furt sau schimbare domiciliu)\" a fost actualizată."
+  },
+  {
+    "id": "log-1792743060665-9v0z6",
+    "timestamp": "2026-10-23T08:11:00.665Z",
+    "action": "login",
+    "entity_type": "auth",
+    "user": "Administrator ActeSimple",
+    "details": "Autentificare reușită în panoul de administrare."
+  },
+  {
     "id": "log-1792659849245-9ra0e",
     "timestamp": "2026-10-22T09:04:09.245Z",
     "action": "verify",

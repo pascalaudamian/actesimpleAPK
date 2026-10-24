@@ -37,6 +37,7 @@ fun ProcedureDetailScreen(
     language: Language,
     activeTab: Int,
     checklistState: UserChecklistState,
+    isBookmarked: Boolean = false,
     onBack: () -> Unit,
     onTabSelected: (Int) -> Unit,
     onToggleDoc: (String) -> Unit,
@@ -45,7 +46,9 @@ fun ProcedureDetailScreen(
     onToggleCustomDoc: (String) -> Unit,
     onCheckAll: () -> Unit,
     onResetChecklist: () -> Unit,
-    onUpdateNotes: (String, String, String) -> Unit
+    onUpdateNotes: (String, String, String) -> Unit,
+    onToggleBookmark: (() -> Unit)? = null,
+    onAddReminder: (() -> Unit)? = null
 ) {
     BackHandler { onBack() }
     val context = LocalContext.current
@@ -90,22 +93,88 @@ fun ProcedureDetailScreen(
                     }
                 },
                 actions = {
-                    // Share summary
+                    // Bookmark button
+                    if (onToggleBookmark != null) {
+                        IconButton(
+                            onClick = onToggleBookmark,
+                            modifier = Modifier.testTag("detail_bookmark_button")
+                        ) {
+                            Icon(
+                                imageVector = if (isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
+                                contentDescription = if (isBookmarked) "Elimină din favorite" else "Salvează la favorite",
+                                tint = if (isBookmarked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+
+                    // Add reminder button
+                    if (onAddReminder != null) {
+                        IconButton(
+                            onClick = onAddReminder,
+                            modifier = Modifier.testTag("detail_reminder_button")
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.NotificationsActive,
+                                contentDescription = if (isRo) "Adaugă memento" else "Add reminder",
+                                tint = MaterialTheme.colorScheme.secondary
+                            )
+                        }
+                    }
+
+                    // Copy guide link to clipboard
                     IconButton(
+                        onClick = {
+                            val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as? android.content.ClipboardManager
+                            val shareUrl = procedure.officialUrl ?: "https://actesimple.ro/#${procedure.slug.ifEmpty { procedure.id }}"
+                            val clip = android.content.ClipData.newPlainText("Procedure URL", shareUrl)
+                            clipboard?.setPrimaryClip(clip)
+                            android.widget.Toast.makeText(
+                                context,
+                                if (isRo) "Linkul ghidului a fost copiat în clipboard!" else "Guide link copied to clipboard!",
+                                android.widget.Toast.LENGTH_SHORT
+                            ).show()
+                        },
+                        modifier = Modifier
+                            .testTag("copy_guide_link_button")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Link,
+                            contentDescription = if (isRo) "Copiază linkul ghidului" else "Copy guide link"
+                        )
+                    }
+
+                    // Share this guide using Android Share Sheet
+                    FilledTonalButton(
                         onClick = {
                             val shareIntent = Intent().apply {
                                 action = Intent.ACTION_SEND
+                                val shareUrl = procedure.officialUrl ?: "https://actesimple.ro/#${procedure.slug.ifEmpty { procedure.id }}"
+                                putExtra(Intent.EXTRA_SUBJECT, title)
                                 putExtra(
                                     Intent.EXTRA_TEXT,
-                                    "ActeSimple: $title\nTaxă: $fee\nTimp: $time\nAutoritate: $authority\nInformații complete pe ActeSimple."
+                                    "$title\n$shareUrl\n\nTaxă: $fee | Timp: $time\nAutoritate: $authority"
                                 )
                                 type = "text/plain"
                             }
-                            context.startActivity(Intent.createChooser(shareIntent, "Trimite sumar procedură"))
+                            context.startActivity(Intent.createChooser(shareIntent, if (isRo) "Distribuie acest ghid" else "Share this guide"))
                         },
-                        modifier = Modifier.testTag("share_procedure_button")
+                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                        modifier = Modifier
+                            .testTag("share_this_guide_button")
+                            .testTag("share_button")
+                            .testTag("share_procedure_button")
                     ) {
-                        Icon(imageVector = Icons.Default.Share, contentDescription = "Distribuie")
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = if (isRo) "Distribuie acest ghid" else "Share this guide",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     }
                 }
             )
@@ -186,17 +255,49 @@ fun ProcedureDetailScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Surface(
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                shape = RoundedCornerShape(8.dp)
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = procedure.category.uppercase(),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                                )
+                                Surface(
+                                    color = MaterialTheme.colorScheme.primaryContainer,
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    Text(
+                                        text = procedure.category.uppercase(),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                    )
+                                }
+
+                                if (procedure.estimatedTimeMinutes != null) {
+                                    Surface(
+                                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                                        shape = RoundedCornerShape(8.dp),
+                                        modifier = Modifier.testTag("procedure_detail_estimated_time")
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Timer,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                                                modifier = Modifier.size(13.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text(
+                                                text = if (isRo) "Timp pregătire: ~${procedure.estimatedTimeMinutes} min" else "Est. completion: ~${procedure.estimatedTimeMinutes} min",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                        }
+                                    }
+                                }
                             }
 
                             Row(

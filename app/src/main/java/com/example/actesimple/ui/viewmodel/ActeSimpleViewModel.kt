@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class ActeSimpleUiState(
+    val currentTab: AppNavigationTab = AppNavigationTab.HOME,
     val language: Language = Language.RO,
     val searchQuery: String = "",
     val selectedCategory: String = "toate",
@@ -26,6 +27,8 @@ data class ActeSimpleUiState(
     val activeDetailTab: Int = 0,
     val currentChecklist: UserChecklistState = UserChecklistState(""),
     val savedSummaries: List<ChecklistSummary> = emptyList(),
+    val bookmarkedProcedureIds: Set<String> = emptySet(),
+    val reminders: List<ReminderItem> = emptyList(),
     val isWizardOpen: Boolean = false,
     val wizardStep: Int = 1,
     val wizardProfile: ApplicantProfile = ApplicantProfile.ROMANIAN,
@@ -35,6 +38,7 @@ data class ActeSimpleUiState(
     val isSavedDossiersOpen: Boolean = false,
     val isOfficialPortalsOpen: Boolean = false,
     val isLegalVerificationOpen: Boolean = false,
+    val isFeedbackOpen: Boolean = false,
     val officialPortals: List<OfficialPortal> = emptyList(),
     val toastMessage: String? = null
 )
@@ -54,6 +58,8 @@ class ActeSimpleViewModel(application: Application) : AndroidViewModel(applicati
         val allProcs = repository.getAllProcedures()
         val cats = repository.getCategories()
         val portals = repository.getOfficialPortals()
+        val bookmarks = preferences.getSavedProcedureIds()
+        val userReminders = preferences.getAllReminders()
 
         _uiState.update { current ->
             current.copy(
@@ -61,7 +67,9 @@ class ActeSimpleViewModel(application: Application) : AndroidViewModel(applicati
                 procedures = allProcs,
                 filteredProcedures = allProcs,
                 officialPortals = portals,
-                savedSummaries = computeSavedSummaries(allProcs)
+                savedSummaries = computeSavedSummaries(allProcs),
+                bookmarkedProcedureIds = bookmarks,
+                reminders = userReminders
             )
         }
     }
@@ -329,5 +337,116 @@ class ActeSimpleViewModel(application: Application) : AndroidViewModel(applicati
 
     fun dismissToast() {
         _uiState.update { it.copy(toastMessage = null) }
+    }
+
+    // Main Navigation Tabs
+    fun setNavigationTab(tab: AppNavigationTab) {
+        _uiState.update { it.copy(currentTab = tab) }
+    }
+
+    // Bookmarking / Saved Guides
+    fun toggleBookmark(procedureId: String) {
+        val isSaved = preferences.toggleSavedProcedure(procedureId)
+        val updatedBookmarks = preferences.getSavedProcedureIds()
+        _uiState.update {
+            it.copy(bookmarkedProcedureIds = updatedBookmarks)
+        }
+        val isRo = _uiState.value.language == Language.RO
+        val message = if (isSaved) {
+            if (isRo) "Ghid salvat la favorite" else "Guide saved to bookmarks"
+        } else {
+            if (isRo) "Ghid eliminat din favorite" else "Guide removed from bookmarks"
+        }
+        showToast(message)
+    }
+
+    fun isBookmarked(procedureId: String): Boolean {
+        return _uiState.value.bookmarkedProcedureIds.contains(procedureId)
+    }
+
+    // Reminders Management
+    fun addReminder(
+        procedureId: String,
+        procedureTitle: String,
+        title: String,
+        targetDate: String,
+        presetDays: Int? = null,
+        notes: String = ""
+    ) {
+        val reminder = ReminderItem(
+            id = "rem-${System.currentTimeMillis()}",
+            procedureId = procedureId,
+            procedureTitle = procedureTitle,
+            title = title,
+            notes = notes,
+            targetDate = targetDate,
+            presetDays = presetDays,
+            isEnabled = true
+        )
+        preferences.saveReminder(reminder)
+        _uiState.update {
+            it.copy(reminders = preferences.getAllReminders())
+        }
+        val isRo = _uiState.value.language == Language.RO
+        showToast(if (isRo) "Memento salvat cu succes!" else "Reminder scheduled successfully!")
+
+        // Optional test notification trigger
+        com.example.actesimple.util.NotificationHelper.showReminderNotification(
+            context = getApplication(),
+            title = "ActeSimple: $title",
+            message = if (isRo) "Memento activ pentru $procedureTitle ($targetDate)" else "Active reminder for $procedureTitle ($targetDate)",
+            procedureId = procedureId
+        )
+    }
+
+    fun toggleReminder(id: String) {
+        preferences.toggleReminder(id)
+        _uiState.update {
+            it.copy(reminders = preferences.getAllReminders())
+        }
+    }
+
+    fun deleteReminder(id: String) {
+        preferences.deleteReminder(id)
+        _uiState.update {
+            it.copy(reminders = preferences.getAllReminders())
+        }
+        val isRo = _uiState.value.language == Language.RO
+        showToast(if (isRo) "Memento șters" else "Reminder deleted")
+    }
+
+    fun triggerTestNotification(title: String, message: String, procedureId: String? = null) {
+        com.example.actesimple.util.NotificationHelper.showReminderNotification(
+            context = getApplication(),
+            title = title,
+            message = message,
+            procedureId = procedureId
+        )
+        val isRo = _uiState.value.language == Language.RO
+        showToast(if (isRo) "Notificare de test trimisă!" else "Test notification sent!")
+    }
+
+    // Feedback Dialog
+    fun openFeedback() {
+        _uiState.update { it.copy(isFeedbackOpen = true) }
+    }
+
+    fun closeFeedback() {
+        _uiState.update { it.copy(isFeedbackOpen = false) }
+    }
+
+    // Clear All Data
+    fun clearAllLocalData() {
+        preferences.clearAllData()
+        _uiState.update {
+            it.copy(
+                currentChecklist = UserChecklistState(""),
+                savedSummaries = emptyList(),
+                bookmarkedProcedureIds = emptySet(),
+                reminders = emptyList()
+            )
+        }
+        val isRo = _uiState.value.language == Language.RO
+        showToast(if (isRo) "Toate datele locale au fost șterse" else "All local data has been cleared")
     }
 }

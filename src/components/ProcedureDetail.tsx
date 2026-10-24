@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   Printer,
   Share2,
+  Copy,
   RotateCcw,
   Download,
   ExternalLink,
@@ -27,6 +28,8 @@ import {
   HelpCircle,
   Globe,
   FileText,
+  Link as LinkIcon,
+  Timer,
 } from 'lucide-react';
 
 interface ProcedureDetailProps {
@@ -65,6 +68,8 @@ export const ProcedureDetail: React.FC<ProcedureDetailProps> = ({
   const [docFilter, setDocFilter] = useState<'toate' | 'obligatorii' | 'ramase'>('toate');
   const [newCustomDocName, setNewCustomDocName] = useState('');
   const [copiedToast, setCopiedToast] = useState(false);
+  const [sharedToast, setSharedToast] = useState(false);
+  const [copiedLinkToast, setCopiedLinkToast] = useState(false);
 
   const displayTitle = lang === 'en' && procedure.title_en ? procedure.title_en : procedure.title;
   const displayFullDesc = lang === 'en' && procedure.full_description_en ? procedure.full_description_en : (procedure.full_description || procedure.short_description);
@@ -73,6 +78,51 @@ export const ProcedureDetail: React.FC<ProcedureDetailProps> = ({
   const displayFee = lang === 'en' && procedure.total_fee_en ? procedure.total_fee_en : procedure.total_fee;
   const displayTime = lang === 'en' && procedure.estimated_time_en ? procedure.estimated_time_en : procedure.estimated_time;
   const proTips = (lang === 'en' && procedure.pro_tips_en && procedure.pro_tips_en.length > 0) ? procedure.pro_tips_en : (procedure.pro_tips || []);
+
+  const getProcedureShareUrl = () => {
+    if (typeof window === 'undefined') return '';
+    const hashTarget = procedure.slug || procedure.id;
+    return `${window.location.origin}${window.location.pathname}#${hashTarget}`;
+  };
+
+  const handleCopyLink = async () => {
+    const shareUrl = getProcedureShareUrl();
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopiedLinkToast(true);
+        setTimeout(() => setCopiedLinkToast(false), 2500);
+      }
+    } catch (e) {
+      console.warn('Clipboard copy error:', e);
+    }
+  };
+
+  const handleShare = async () => {
+    const shareUrl = getProcedureShareUrl();
+    const shareData = {
+      title: displayTitle,
+      text: `${displayTitle} — Ghid complet acte, taxe și pași pe ActeSimple`,
+      url: shareUrl,
+    };
+
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share(shareData);
+        setSharedToast(true);
+        setTimeout(() => setSharedToast(false), 2500);
+        return;
+      } catch (err: any) {
+        // If the user cancelled the native share sheet, do not fallback to error
+        if (err?.name === 'AbortError') {
+          return;
+        }
+      }
+    }
+
+    // Fallback: Copy direct procedure URL to clipboard
+    await handleCopyLink();
+  };
 
   const handleCopy = () => {
     const text = generateShareText(displayTitle);
@@ -164,19 +214,43 @@ export const ProcedureDetail: React.FC<ProcedureDetailProps> = ({
           <span>{t.backToProcedures}</span>
         </button>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Share this guide button (Web Share API with copy link fallback + quick copy) */}
+          <div className="inline-flex items-center rounded-lg border border-blue-200 bg-blue-50 shadow-2xs overflow-hidden">
+            <button
+              onClick={handleShare}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-blue-700 hover:bg-blue-100 transition cursor-pointer"
+              title={lang === 'ro' ? 'Distribuie acest ghid (Web Share API sau copiază linkul)' : 'Share this guide (Web Share API or copy link)'}
+              data-testid="share-this-guide-button"
+              aria-label={t.shareThisGuide}
+            >
+              {sharedToast ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4 text-blue-600" />}
+              <span>{sharedToast ? t.shareSuccessToast : t.shareThisGuide}</span>
+            </button>
+            <button
+              onClick={handleCopyLink}
+              className="px-2.5 py-1.5 text-blue-700 hover:bg-blue-100 border-l border-blue-200 transition cursor-pointer"
+              title={t.copyGuideLink}
+              data-testid="copy-guide-link-button"
+              aria-label={t.copyGuideLink}
+            >
+              {copiedLinkToast ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <LinkIcon className="w-3.5 h-3.5 text-blue-600" />}
+            </button>
+          </div>
+
           <button
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 shadow-2xs transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 shadow-2xs transition cursor-pointer"
             title="Copiază lista pentru WhatsApp sau Notițe"
+            data-testid="copy-summary-button"
           >
-            {copiedToast ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4 text-slate-500" />}
-            <span>{copiedToast ? t.copiedToast : t.copySummaryBtn}</span>
+            {copiedToast ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-500" />}
+            <span className="hidden sm:inline">{copiedToast ? t.copiedToast : t.copySummaryBtn}</span>
           </button>
 
           <button
             onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 shadow-2xs transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 shadow-2xs transition cursor-pointer"
             title="Tipărește checklist-ul pentru dosar"
           >
             <Printer className="w-4 h-4 text-slate-500" />
@@ -185,7 +259,7 @@ export const ProcedureDetail: React.FC<ProcedureDetailProps> = ({
 
           <button
             onClick={resetChecklist}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-rose-700 bg-rose-50 hover:bg-rose-100/80 border border-rose-200 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg text-rose-700 bg-rose-50 hover:bg-rose-100/80 border border-rose-200 transition cursor-pointer"
             title="Resetează toate bifările pentru această procedură"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -214,12 +288,37 @@ export const ProcedureDetail: React.FC<ProcedureDetailProps> = ({
               <span>{t.onlineAvailableTag}</span>
             </span>
           )}
-          <div className="ml-auto inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border bg-emerald-50 text-emerald-800 border-emerald-200">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>
-              {t.verifiedOfficial}: {formatVerifiedDate(procedure.last_verified_at)}
-              {procedure.verified_by ? ` (de ${procedure.verified_by})` : ''}
+          {procedure.estimated_time_minutes != null && (
+            <span
+              className="text-xs font-bold bg-cyan-50 text-cyan-800 px-2.5 py-1 rounded-full border border-cyan-200 flex items-center gap-1.5 shadow-2xs"
+              data-testid="procedure-detail-estimated-time"
+            >
+              <Timer className="w-3.5 h-3.5 text-cyan-600" />
+              <span>
+                {lang === 'ro'
+                  ? `Timp parcurgere: ~${procedure.estimated_time_minutes} min`
+                  : `Est. completion: ~${procedure.estimated_time_minutes} min`}
+              </span>
             </span>
+          )}
+          <div className="ml-auto inline-flex items-center gap-2">
+            <button
+              onClick={handleShare}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white text-slate-700 hover:text-blue-700 border border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 transition cursor-pointer shadow-2xs"
+              title={t.shareThisGuide}
+              data-testid="share-button"
+              aria-label={t.shareThisGuide}
+            >
+              <Share2 className="w-3.5 h-3.5 text-blue-600" />
+              <span>{sharedToast ? t.shareSuccessToast : t.shareThisGuide}</span>
+            </button>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border bg-emerald-50 text-emerald-800 border-emerald-200">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>
+                {t.verifiedOfficial}: {formatVerifiedDate(procedure.last_verified_at)}
+                {procedure.verified_by ? ` (de ${procedure.verified_by})` : ''}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -312,6 +411,20 @@ export const ProcedureDetail: React.FC<ProcedureDetailProps> = ({
             <div className="text-[11px] text-slate-500 mt-0.5">
               {lang === 'ro' ? 'De la depunerea dosarului' : 'From dossier submission'}
             </div>
+            {procedure.estimated_time_minutes != null && (
+              <div
+                className="mt-2 pt-2 border-t border-slate-200/70 flex items-center gap-1.5 text-xs font-semibold text-cyan-800"
+                data-testid="procedure-detail-estimated-time-fact"
+              >
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-cyan-100/70 border border-cyan-200 text-[11px]">
+                  <Timer className="w-3 h-3 text-cyan-700" />
+                  ~{procedure.estimated_time_minutes} min
+                </span>
+                <span className="text-[10px] text-slate-500 font-normal">
+                  {lang === 'ro' ? 'pregătire dosar' : 'dossier preparation'}
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100">
@@ -1097,6 +1210,60 @@ export const ProcedureDetail: React.FC<ProcedureDetailProps> = ({
               {t.legalDisclaimerBottom}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Civic Share Box */}
+      <div className="mt-8 p-6 bg-linear-to-r from-blue-50 via-indigo-50/40 to-slate-50 rounded-2xl border border-blue-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 print:hidden">
+        <div className="space-y-1">
+          <h3 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+            <Share2 className="w-4 h-4 text-blue-600" />
+            <span>{t.shareThisGuide}</span>
+          </h3>
+          <p className="text-xs text-slate-600 max-w-xl">
+            {lang === 'ro'
+              ? 'Trimite acest ghid complet unui prieten, coleg sau membru al familiei care are nevoie să rezolve această procedură în România.'
+              : 'Share this verified step-by-step guide with a friend, colleague, or family member who needs to complete this procedure in Romania.'}
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <button
+            onClick={handleShare}
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl text-white bg-blue-600 hover:bg-blue-700 shadow-xs transition cursor-pointer"
+            data-testid="bottom-share-guide-button"
+            aria-label={t.shareThisGuide}
+          >
+            {sharedToast ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
+            <span>{sharedToast ? t.shareSuccessToast : t.shareThisGuide}</span>
+          </button>
+          <button
+            onClick={handleCopyLink}
+            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium rounded-xl text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 shadow-2xs transition cursor-pointer"
+            title={t.copyGuideLink}
+            data-testid="bottom-copy-link-button"
+            aria-label={t.copyGuideLink}
+          >
+            {copiedLinkToast ? <Check className="w-4 h-4 text-emerald-600" /> : <LinkIcon className="w-4 h-4 text-slate-600" />}
+            <span>{copiedLinkToast ? t.guideLinkCopiedToast : t.copyGuideLink}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Floating feedback toast */}
+      {(copiedLinkToast || sharedToast || copiedToast) && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-6 right-6 z-50 bg-slate-900/95 backdrop-blur-xs text-white text-xs sm:text-sm font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 border border-slate-700/80 transition-all duration-200"
+        >
+          <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>
+            {copiedLinkToast
+              ? t.guideLinkCopiedToast
+              : sharedToast
+              ? t.shareSuccessToast
+              : t.copiedToast}
+          </span>
         </div>
       )}
 

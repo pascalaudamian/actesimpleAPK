@@ -19,11 +19,14 @@ fun AppTopBar(
     language: Language,
     savedCount: Int,
     isDetailOpen: Boolean,
+    remindersCount: Int = 0,
     onBack: () -> Unit,
     onToggleLanguage: () -> Unit,
     onOpenSavedDossiers: () -> Unit,
     onOpenOfficialPortals: () -> Unit,
-    onOpenVerificationInfo: () -> Unit
+    onOpenVerificationInfo: () -> Unit,
+    onOpenReminders: (() -> Unit)? = null,
+    onOpenSettings: (() -> Unit)? = null
 ) {
     TopAppBar(
         title = {
@@ -117,15 +120,38 @@ fun AppTopBar(
                 }
             }
 
-            // Legal & Editorial Verification Info
-            IconButton(
-                onClick = onOpenVerificationInfo,
-                modifier = Modifier.testTag("verification_info_button")
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Shield,
-                    contentDescription = "Transparență & Verificare legală"
-                )
+            // Reminders with Badge
+            if (onOpenReminders != null) {
+                IconButton(
+                    onClick = onOpenReminders,
+                    modifier = Modifier.testTag("top_bar_reminders_button")
+                ) {
+                    BadgedBox(
+                        badge = {
+                            if (remindersCount > 0) {
+                                Badge { Text("$remindersCount") }
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Alarm,
+                            contentDescription = "Mementouri termene"
+                        )
+                    }
+                }
+            }
+
+            // Settings
+            if (onOpenSettings != null) {
+                IconButton(
+                    onClick = onOpenSettings,
+                    modifier = Modifier.testTag("top_bar_settings_button")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "Setări & Transparență"
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

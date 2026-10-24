@@ -51,6 +51,11 @@ export interface Translations {
 
   // Procedure Detail & Checklist
   backToProcedures: string;
+  shareBtn: string;
+  shareThisGuide: string;
+  copyGuideLink: string;
+  guideLinkCopiedToast: string;
+  shareSuccessToast: string;
   copySummaryBtn: string;
   copiedToast: string;
   printDossierBtn: string;
@@ -62,6 +67,9 @@ export interface Translations {
   competentAuthority: string;
   totalFees: string;
   estimatedTime: string;
+  estimatedCompletionTimeBadge: string;
+  estimatedCompletionMinutes: string;
+  estimatedPreparationLabel: string;
   documentsToPrepare: string;
   proTipTitle: string;
   personalChecklistTitle: string;
@@ -209,6 +217,11 @@ export const translations: Record<Language, Translations> = {
     resetFiltersBtn: 'Resetează filtrele',
 
     backToProcedures: 'Înapoi la proceduri',
+    shareBtn: 'Distribuie',
+    shareThisGuide: 'Distribuie acest ghid',
+    copyGuideLink: 'Copiază linkul ghidului',
+    guideLinkCopiedToast: 'Linkul ghidului a fost copiat în clipboard!',
+    shareSuccessToast: 'Link copiat / distribuit!',
     copySummaryBtn: 'Copiază rezumat',
     copiedToast: 'Copiat în clipboard!',
     printDossierBtn: 'Tipărește dosar',
@@ -220,6 +233,9 @@ export const translations: Record<Language, Translations> = {
     competentAuthority: 'Instituție competentă',
     totalFees: 'Taxe totale',
     estimatedTime: 'Timp estimat',
+    estimatedCompletionTimeBadge: 'Timp estimat parcurgere',
+    estimatedCompletionMinutes: 'min',
+    estimatedPreparationLabel: 'Timp pregătire dosar',
     documentsToPrepare: 'Acte de pregătit',
     proTipTitle: 'Sfat important & capcană birocratică frecventă:',
     personalChecklistTitle: 'Checklist personal: Dosarul tău de acte',
@@ -360,6 +376,11 @@ export const translations: Record<Language, Translations> = {
     resetFiltersBtn: 'Reset filters',
 
     backToProcedures: 'Back to procedures',
+    shareBtn: 'Share',
+    shareThisGuide: 'Share this guide',
+    copyGuideLink: 'Copy guide link',
+    guideLinkCopiedToast: 'Guide link copied to clipboard!',
+    shareSuccessToast: 'Link copied / shared!',
     copySummaryBtn: 'Copy summary',
     copiedToast: 'Copied to clipboard!',
     printDossierBtn: 'Print dossier',
@@ -371,6 +392,9 @@ export const translations: Record<Language, Translations> = {
     competentAuthority: 'Competent authority',
     totalFees: 'Total statutory fees',
     estimatedTime: 'Estimated processing time',
+    estimatedCompletionTimeBadge: 'Estimated completion time',
+    estimatedCompletionMinutes: 'min',
+    estimatedPreparationLabel: 'Dossier preparation time',
     documentsToPrepare: 'Documents to prepare',
     proTipTitle: 'Important tip & common bureaucratic pitfall:',
     personalChecklistTitle: 'Personal checklist: Your application dossier',

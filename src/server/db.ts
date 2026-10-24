@@ -73,9 +73,17 @@ function readDb(): DatabaseSchema {
     const raw = fs.readFileSync(DB_FILE, 'utf-8');
     const parsed = JSON.parse(raw) as DatabaseSchema;
     
-    // Auto-merge new seed procedures
-    const existingIds = new Set(parsed.procedures.map((p) => p.id));
+    // Auto-merge new seed procedures and sync estimated_time_minutes
+    const seedMap = new Map(INITIAL_PROCEDURES.map((p) => [p.id, p]));
     let hasNew = false;
+    for (const p of parsed.procedures) {
+      const seed = seedMap.get(p.id);
+      if (seed && seed.estimated_time_minutes !== undefined && p.estimated_time_minutes === undefined) {
+        p.estimated_time_minutes = seed.estimated_time_minutes;
+        hasNew = true;
+      }
+    }
+    const existingIds = new Set(parsed.procedures.map((p) => p.id));
     for (const initP of INITIAL_PROCEDURES) {
       if (!existingIds.has(initP.id)) {
         parsed.procedures.push(initP);
